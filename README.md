@@ -46,3 +46,6 @@ Email: ispd26contest@gmail.com
 ## Sponsors
 - Purdue University and the NSF [Chipshub](https://nanohub.org/groups/chipshub/): compute resources for teams and submission evaluation
 - NVIDIA: prizes for winning teams
+
+## Support
+Feel free to **open a GitHub issue** if you have any questions.
