@@ -9,7 +9,7 @@ export LOG_FILE="${FOLDER_NAME}/evaluation.log"
 export METRICS_CSV="${FOLDER_NAME}/metrics.csv"
 export CONGESTION_REPORT="${FOLDER_NAME}/congestion_report.rpt"
 
-# commit hash: 2976317355a8370ad56605ce95cbe7a9afdf18e4
+# commit hash: 2976317
 /OpenROAD/build/bin/openroad -exit ${PROJ_DIR}/evaluation.tcl | tee ./${LOG_FILE}
 
 # output metrics to csv
