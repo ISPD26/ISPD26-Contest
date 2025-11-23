@@ -35,6 +35,7 @@ read_sdc $sdc_file
 #set_propagated_clock [get_clocks *]
 set_ideal_network [all_clocks]
 
+source $rc_file
 # Keep units exactly as requested
 set_cmd_units -time ns -capacitance pF -current mA -voltage V -resistance kOhm -distance um -power mW
 set_units -power mW
