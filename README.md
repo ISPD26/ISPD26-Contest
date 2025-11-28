@@ -66,6 +66,7 @@ Email: ispd26contest@gmail.com
 | 26   | The Phoenix Gate Guardians      | The Chinese University of Hong Kong |
 | 27   | \(^(oo)^)/      | National Tsing Hua University |
 | 28   | Masters of Chatgpt      | Yuan Ze University |
+| 29   | HLFC      | National Tsing Hua University |
 
 ## Contest Prizes
 - First, second and third place winning teams will receive prizes consisting of cash and/or NVIDIA GPUs, with a total value of prizes at least USD $5000. Thanks to NVIDIA for their sponsorship of the ISPD26 contest prizes!
