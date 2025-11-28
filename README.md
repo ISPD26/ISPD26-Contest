@@ -73,7 +73,7 @@ Email: ispd26contest@gmail.com
 ## Organizers
 - Andrew B. Kahng, Sayak Kundu, Yiting Liu, and Davit Markarian from UCSD
 - Zhiang Wang from Fudan University
-- Seonghyeon Park from POSTECH
+- Seokhyeong Kahng and Seonghyeon Park from POSTECH
 
 ## Sponsors
 - Purdue University and the NSF [Chipshub](https://nanohub.org/groups/chipshub/): compute resources for teams and submission evaluation
