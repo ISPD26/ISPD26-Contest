@@ -69,6 +69,8 @@ Email: ispd26contest@gmail.com
 | 29   | HLFC      | National Tsing Hua University |
 | 30   | ECO      | Independent |
 | 31   | PTSD      | National Tsing Hua University |
+| 32   | TCLAB      | National Tsing Hua University  |
+| 33   | IRISLab      | Graduate Institute of Electronics Engineering National Taiwan University |
 
 
 ## Contest Prizes
