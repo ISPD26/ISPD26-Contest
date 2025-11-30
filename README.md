@@ -71,6 +71,7 @@ Email: ispd26contest@gmail.com
 | 31   | PTSD      | National Tsing Hua University |
 | 32   | TCLAB      | National Tsing Hua University  |
 | 33   | IRISLab      | Graduate Institute of Electronics Engineering National Taiwan University |
+| 34   | warp_speed      | Indian Institute of Technology Madras |
 
 
 ## Contest Prizes
