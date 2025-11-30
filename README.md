@@ -72,6 +72,7 @@ Email: ispd26contest@gmail.com
 | 32   | TCLAB      | National Tsing Hua University  |
 | 33   | IRISLab      | Graduate Institute of Electronics Engineering National Taiwan University |
 | 34   | warp_speed      | Indian Institute of Technology Madras |
+| 35   | XORcists      | Faculty of Engineering, University of Peradeniya |
 
 
 ## Contest Prizes
