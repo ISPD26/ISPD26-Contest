@@ -30,10 +30,10 @@ rm oss-cad-suite.tgz
 cd /
 git clone https://github.com/The-OpenROAD-Project/OpenROAD-flow-scripts.git
 cd OpenROAD-flow-scripts
-git reset --hard 66e441c6cbb6cb9ac871726fc8373317f164ed84
+git reset --hard 26b521c49218eb10f4274d782e420cdc824adbc3
 
 cd /
-git clone https://github.com/The-OpenROAD-Project/OpenROAD.git 
+git clone https://github.com/The-OpenROAD-Project/OpenROAD.git
 cd OpenROAD
-git reset --hard 2976317355a8370ad56605ce95cbe7a9afdf18e4
+git reset --hard  7559f9664a6561cc277e4ec8161b742573e7d521
 git submodule update --init --recursive

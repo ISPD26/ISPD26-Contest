@@ -17,7 +17,7 @@ fi
 
 export PATH="/opt/oss-cad-suite/bin":$PATH
 export YOSYS_EXE=/opt/oss-cad-suite/bin/yosys
-export OPENROAD_EXE=/OpenROAD/build/src/openroad
+export OPENROAD_EXE=/OpenROAD/build/bin/openroad
 
 cat /etc/motd
 

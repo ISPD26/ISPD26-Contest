@@ -3,13 +3,13 @@
 ## Container
 
 The intention of this container is to provide a consistent interactive environment for development and evaluation. It is based on Ubuntu 24.04 and contains:
-- OpenROAD - Binary installation with sources at `/OpenROAD` (Commit `2976317355a8370ad56605ce95cbe7a9afdf18e4`)
+- OpenROAD - Binary installation with sources at `/OpenROAD` (Commit `7559f9664a6561cc277e4ec8161b742573e7d521`)
     - This version is patched to support the [evaluator](../scripts/evaluation.tcl), see [`ord.patch`](ord.patch) if you wish to build your own version.
 - OpenROAD-Flow-Scripts (commit `66e441c6cbb6cb9ac871726fc8373317f164ed84`)
 - Conda 25.7.0 (Miniconda)
 - Miscellaneous tools including Yosys.
 
-See the [Dockerfile here](./dockerfile). A precompiled image can be retrieved from the Docker Hub [`udxs/ispd26:v1`](https://hub.docker.com/repository/docker/udxs/ispd26/tags/v1/sha256-cb27311078045ffe6849dc31a488a48230efce6bd5ead215e21a6dd755f810c3). This image is also compatbile with Apptainer (formerly Singularity) - see below.
+See the [Dockerfile here](./dockerfile). A precompiled image can be retrieved from the Docker Hub [`udxs/ispd26:v2`](https://hub.docker.com/repository/docker/udxs/ispd26/tags/v2/sha256-2d18fcbd6435a227c6a8b43036c6cabfbf1edae80b5658faa4e1365575c14801). This image is also compatbile with Apptainer (formerly Singularity) - see below.
 
 ### Using Apptainer (Singularity)
 
