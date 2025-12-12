@@ -2,7 +2,6 @@ set libdir "${top_proj_dir}/Platform/ASAP7/lib"
 set lefdir "${top_proj_dir}/Platform/ASAP7/lef"
 
 
-
 set libworst "
  ${libdir}/asap7sc7p5t_AO_LVT_TT_nldm_211120.lib \
   ${libdir}/asap7sc7p5t_AO_RVT_TT_nldm_211120.lib \
@@ -20,6 +19,7 @@ set libworst "
   ${libdir}/asap7sc7p5t_SIMPLE_RVT_TT_nldm_211120.lib \
   ${libdir}/asap7sc7p5t_SIMPLE_SLVT_TT_nldm_211120.lib \
   ${libdir}/sram_asap7_64x256_1rw.lib \
+  ${libdir}/fakeram_256x64.lib \
   "
 
 set libbest "
@@ -39,6 +39,7 @@ set libbest "
   ${libdir}/asap7sc7p5t_SIMPLE_RVT_TT_nldm_211120.lib \
   ${libdir}/asap7sc7p5t_SIMPLE_SLVT_TT_nldm_211120.lib \
   ${libdir}/sram_asap7_64x256_1rw.lib \
+  ${libdir}/fakeram_256x64.lib \
   "
 
 set lefs "
@@ -47,6 +48,7 @@ set lefs "
   ${lefdir}/asap7sc7p5t_28_R_1x_220121a.lef \
   ${lefdir}/asap7sc7p5t_28_SL_1x_220121a.lef \
   ${lefdir}/sram_asap7_64x256_1rw.lef \
+  ${lefdir}/fakeram_256x64.lef \
   "
 
 set rc_file "${top_proj_dir}/Platform/ASAP7/util/setRC.tcl"
