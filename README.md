@@ -52,7 +52,7 @@ Email: ispd26contest@gmail.com
 | 9   | HKUST-GZ         |The Hong Kong University of Science and Technology (Guangzhou) |
 | 10   | arg_duck         | Independent|
 | 11   | Placed and Confused         | Chair of Design Automation, Technical University of Munich (TUM)|
-| 12   | ChipFat         |Vellore Institute of Technosssslogy |
+| 12   | ChipFat         |Vellore Institute of Technology |
 | 13   | UCLA_Placer         |UCLA |
 | 14   | IRISLab         | Graduate Institute of Electronics Engineering, National Taiwan University|
 | 15   | timing-booster         | Texas A&M University|
