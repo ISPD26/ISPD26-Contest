@@ -9,7 +9,7 @@ The intention of this container is to provide a consistent interactive environme
 - Conda 25.7.0 (Miniconda)
 - Miscellaneous tools including Yosys.
 
-See the [Dockerfile here](./dockerfile). A precompiled image can be retrieved from the Docker Hub [`udxs/ispd26:v2`](https://hub.docker.com/repository/docker/udxs/ispd26/tags/v2/sha256-2d18fcbd6435a227c6a8b43036c6cabfbf1edae80b5658faa4e1365575c14801). This image is also compatbile with Apptainer (formerly Singularity) - see below.
+See the [Dockerfile here](./dockerfile). A precompiled image can be retrieved from the Docker Hub [`udxs/ispd26:v3`](https://hub.docker.com/repository/docker/udxs/ispd26/tags/v3/sha256-bc9afb6b3e119c91a3d9e85f4c184fe5318742b3bf5920fdf485e70295a51311). This image is also compatbile with Apptainer (formerly Singularity) - see below.
 
 ### Using Apptainer (Singularity)
 

@@ -11,6 +11,7 @@ RUN chmod 777 /opt/entrypoint.sh
 COPY image_init.sh /opt
 RUN source /opt/image_init.sh
 COPY prep_or.sh /opt
+COPY ord.patch /opt
 RUN source /opt/prep_or.sh
 
 
