@@ -1,2 +1,0 @@
-Benchmarks/bsg_chip_v2/TCP_1300_UTIL_0.50/contest.def filter=lfs diff=lfs merge=lfs -text
-Benchmarks/bsg_chip_v2/TCP_1300_UTIL_0.50/contest.v filter=lfs diff=lfs merge=lfs -text
