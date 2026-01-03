@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RUN_SH="/ISPD26-Contest/run/run.sh"
+RUN_SH="/ISPD26-Contest/solution/run.sh"
 
 TECH_DIR="/ISPD26-Contest/Platform/ASAP7"
 BENCH_ROOT="/ISPD26-Contest/Benchmarks"

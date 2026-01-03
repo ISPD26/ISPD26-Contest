@@ -81,7 +81,7 @@ done
 
 # Run the baseline step
 if [[ "$RUN_BASELINE" -eq 1 ]]; then
-  /ISPD26-Contest/run/baseline/main.sh
+  /ISPD26-Contest/solution/baseline/main.sh
   echo "Baseline step completed."
 fi
 
