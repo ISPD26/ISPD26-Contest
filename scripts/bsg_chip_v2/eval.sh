@@ -1,8 +1,8 @@
 export TOP_PROJ_DIR="/ISPD26-Contest"
 export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 
-export DESIGN_NAME="jpeg_encoder"
-export FOLDER_NAME="TCP_350_UTIL_0.70"
+export DESIGN_NAME="bsg_chip_v2"
+export FOLDER_NAME="TCP_1300_UTIL_0.50"
 
 OUT_DIR="${TOP_PROJ_DIR}/output/${DESIGN_NAME}/${FOLDER_NAME}"
 
@@ -14,5 +14,6 @@ export CONGESTION_REPORT="${OUT_DIR}/congestion_report.rpt"
 
 # output metrics to csv
 python3 ${PROJ_DIR}/parse_log.py ${LOG_FILE} --csv ${METRICS_CSV}
+
 
 

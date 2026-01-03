@@ -1,0 +1,3 @@
+design,placement_legal,total_insts,wns,tns,time_unit,slew_over_sum,slew_over_count,cap_over_sum,cap_over_count,cap_unit,fanout_over_sum,fanout_over_count,leakage_power,total_power,power_unit,max_gr_overflow,total_gr_overflow,legal_fail_summary,tool_runtime,flow_runtime
+ariane,1,134176,-2.31,-30154.39,ns,19757.81999999658,75548,19.40000000000033,844,pF,0.0,0,5630000000.0,150000000000.0,pw,0.0,0.0,,,81.0
+ariane,1,134176,-2.31,-30154.39,ns,19757.81999999658,75548,19.40000000000033,844,pF,0.0,0,5630000000.0,150000000000.0,pw,0.0,0.0,,,87.0

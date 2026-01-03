@@ -4,16 +4,16 @@ export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 export DESIGN_NAME="aes_cipher_top"
 export FOLDER_NAME="TCP_250_UTIL_0.40"
 
+OUT_DIR="${TOP_PROJ_DIR}/output/${DESIGN_NAME}/${FOLDER_NAME}"
 
-mkdir ${FOLDER_NAME} -p
-export LOG_FILE="${FOLDER_NAME}/evaluation.log"
-export METRICS_CSV="${FOLDER_NAME}/metrics.csv"
-export CONGESTION_REPORT="${FOLDER_NAME}/congestion_report.rpt"
-
-/OpenROAD/build/bin/openroad -exit ${PROJ_DIR}/evaluation.tcl | tee ./${LOG_FILE}
+mkdir -p "${OUT_DIR}"
+export LOG_FILE="${OUT_DIR}/evaluation.log"
+export METRICS_CSV="${OUT_DIR}/metrics.csv"
+export CONGESTION_REPORT="${OUT_DIR}/congestion_report.rpt"
+/OpenROAD/build/bin/openroad -exit ${PROJ_DIR}/evaluation.tcl | tee ${LOG_FILE}
 
 # output metrics to csv
-python3 ${PROJ_DIR}/parse_log.py ./${LOG_FILE} --csv ./${METRICS_CSV}
+python3 ${PROJ_DIR}/parse_log.py ${LOG_FILE} --csv ${METRICS_CSV}
 
 
 

@@ -1,8 +1,8 @@
 export TOP_PROJ_DIR="/ISPD26-Contest"
 export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 
-export DESIGN_NAME="jpeg_encoder"
-export FOLDER_NAME="TCP_350_UTIL_0.70"
+export DESIGN_NAME="ariane_v2"
+export FOLDER_NAME="TCP_950_UTIL_0.45"
 
 OUT_DIR="${TOP_PROJ_DIR}/output/${DESIGN_NAME}/${FOLDER_NAME}"
 

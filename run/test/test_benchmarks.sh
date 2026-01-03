@@ -74,6 +74,7 @@ for item in "${benchmarks[@]}"; do
 
   design_dir="$BENCH_ROOT/$design_name/$scenario"
   out_dir="$OUT_ROOT/$design_name/$scenario"
+  log_file="$out_dir/run.log"
 
   mkdir -p "$out_dir"
 
@@ -81,6 +82,7 @@ for item in "${benchmarks[@]}"; do
   echo "[RUN] $design_name / $scenario"
   echo "  design_dir: $design_dir"
   echo "  out_dir   : $out_dir"
+  echo "  log       : $log_file"
   echo "------------------------------------------------------------"
 
   if [[ ! -d "$design_dir" ]]; then
@@ -90,16 +92,16 @@ for item in "${benchmarks[@]}"; do
   fi
 
   set +e
-  "$RUN_SH" "$design_name" "$TECH_DIR" "$design_dir" "$out_dir" "${PASS_ARGS[@]}"
-  rc=$?
+  "$RUN_SH" "$design_name" "$TECH_DIR" "$design_dir" "$out_dir" "${PASS_ARGS[@]}" | tee "$log_file"
+  rc=${PIPESTATUS[0]}
   set -e
 
   if [[ $rc -ne 0 ]]; then
-    echo "[FAIL] rc=$rc  ($design_name/$scenario)"
+    echo "[FAIL] rc=$rc  ($design_name/$scenario)" | tee -a "$log_file"
     failures+=("$design_name/$scenario (rc=$rc)")
   else
-    echo "[OK]   ($design_name/$scenario)"
-    cd "/ISPD26-Contest/scripts/${design_name%_v2}"
+    echo "[OK]   ($design_name/$scenario)" | tee -a "$log_file"
+    cd "/ISPD26-Contest/scripts/${design_name}"
     source eval.sh
     cd "$current_dir"
   fi
