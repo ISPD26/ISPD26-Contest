@@ -19,6 +19,7 @@ foreach lef [glob -nocomplain $tech_dir/lef/asap7sc7p5t_28_*_1x_220121a.lef] {
 foreach lef [glob -nocomplain $tech_dir/lef/sram_asap7_*.lef] {
   read_lef $lef
 }
+read_lef $tech_dir/lef/fakeram_256x64.lef
 foreach lib [glob -nocomplain $tech_dir/lib/*.lib] {
   read_liberty $lib
 }
