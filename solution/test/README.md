@@ -1,73 +1,35 @@
-# Benchmark Test Script — `test_benchmarks.sh`
+# Benchmark Batch Runner
 
-## Overview
-`test_benchmarks.sh` is a helper script for **running benchmark tests**.
-It supports:
-- Running **all benchmarks**
-- Running a **single specified benchmark**
+`test_bench.sh` sweeps the bundled ISPD26 benchmarks using `solution/run.sh`, captures logs, and triggers per-design evaluation when available.
 
-In addition, the script provides an option to control whether the **Baseline algorithm** is used.
-
----
+## Benchmarks covered
+```
+aes_cipher_top TCP_250_UTIL_0.40
+aes_cipher_top_v2 TCP_200_UTIL_0.40
+ariane TCP_900_UTIL_0.30
+ariane_v2 TCP_950_UTIL_0.45
+bsg_chip TCP_1200_UTIL_0.30
+bsg_chip_v2 TCP_1300_UTIL_0.50
+jpeg_encoder TCP_350_UTIL_0.70
+jpeg_encoder_v2 TCP_450_UTIL_0.65
+```
 
 ## Usage
-
-### Basic Usage
 ```bash
-./test_benchmarks.sh [--design <design_name>]
+# Run all benchmarks
+./test_bench.sh -a [-t <tcl_name>]
+
+# Run selected designs
+./test_bench.sh -d <design1> [design2 ...] [-t <tcl_name>]
 ```
+- `-a`: run every listed benchmark.
+- `-d`: choose one or more design names from the list above.
+- `-t <tcl_name>`: pick `solution/tcl/<tcl_name>.tcl` (default `baseline`).
 
-- **No arguments**: run all benchmarks
-- `--design <design_name>`: run only the specified benchmark
+Outputs go to `/ISPD26-Contest/output/<design>/<scenario>/` with logs in `run.log`. After each run, the script calls `scripts/<design>/eval.sh` if it exists to generate metrics.
 
----
-
-## Examples
-
-### 1. Run all benchmarks
+## Example
 ```bash
-./test_benchmarks.sh
-```
-
-### 2. Run a single benchmark
-```bash
-./test_benchmarks.sh --design aes_cipher_top
-```
-
----
-
-## Baseline Algorithm Control
-
-The `RUN_BASELINE` environment variable controls whether the **Baseline algorithm** is used.
-
-### Syntax
-```bash
-./test_benchmarks.sh [RUN_BASELINE=0|1]
-```
-
-- `RUN_BASELINE=1` (default): use the **Baseline algorithm**
-- `RUN_BASELINE=0`: use an **alternative (non-baseline) algorithm**
-
----
-
-## Examples
-
-### 1. Use a non-baseline algorithm
-```bash
-./test_benchmarks.sh RUN_BASELINE=0
-```
-
-### 2. Use the baseline algorithm
-```bash
-./test_benchmarks.sh RUN_BASELINE=1
-```
-
----
-
-## Notes
-- `RUN_BASELINE` is an **environment variable** and must be specified on the same command line
-- `--design` and `RUN_BASELINE` can be used together
-
-```bash
-./test_benchmarks.sh --design aes_cipher_top RUN_BASELINE=0
+# Run a subset with the baseline flow
+./test_bench.sh -d aes_cipher_top ariane -t baseline
 ```

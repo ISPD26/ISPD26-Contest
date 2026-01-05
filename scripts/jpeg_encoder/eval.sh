@@ -4,7 +4,7 @@ export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 export DESIGN_NAME="jpeg_encoder"
 export FOLDER_NAME="TCP_350_UTIL_0.70"
 
-OUT_DIR="${TOP_PROJ_DIR}/output/${DESIGN_NAME}/${FOLDER_NAME}"
+OUT_DIR="${TOP_PROJ_DIR}/solution/output/${DESIGN_NAME}/${FOLDER_NAME}"
 
 mkdir -p "${OUT_DIR}"
 export LOG_FILE="${OUT_DIR}/evaluation.log"

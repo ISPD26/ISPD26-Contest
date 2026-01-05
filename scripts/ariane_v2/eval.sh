@@ -4,7 +4,7 @@ export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 export DESIGN_NAME="ariane_v2"
 export FOLDER_NAME="TCP_950_UTIL_0.45"
 
-OUT_DIR="${TOP_PROJ_DIR}/output/${DESIGN_NAME}/${FOLDER_NAME}"
+OUT_DIR="${TOP_PROJ_DIR}/solution/output/${DESIGN_NAME}/${FOLDER_NAME}"
 
 mkdir -p "${OUT_DIR}"
 export LOG_FILE="${OUT_DIR}/evaluation.log"

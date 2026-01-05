@@ -1,23 +1,39 @@
-# run.sh quick start
+# Solution Runner
 
-`run.sh` drives a single benchmark flow. Provide the design name, tech directory, design directory, and output directory in that order.
+`run.sh` is the entrypoint for running a single ISPD26 benchmark through OpenROAD. It wires up the environment, launches the chosen Tcl flow, and writes outputs to the directory you provide.
 
-## Usage
-- `./run.sh <design_name> <tech_dir> <design_dir> <output_dir> [RUN_BASELINE=0|1]`
-- `-h` prints the built-in help and exits.
+## Requirements
+- Bash environment with `openroad` on `PATH`.
 
-## Arguments
-- `design_name`: e.g., `aes_cipher_top`
-- `tech_dir`: process technology root, e.g., `/ISPD26-Contest/Platform/ASAP7`
-- `design_dir`: benchmark scenario directory, e.g., `/ISPD26-Contest/Benchmarks/aes_cipher_top/TCP_250_UTIL_0.40`
-- `output_dir`: where results are written, e.g., `/ISPD26-Contest/output/aes_cipher_top/TCP_250_UTIL_0.40`
-- `RUN_BASELINE`: optional; set to `0` to skip the baseline flow (default `1`).
+## Basic Usage
+```bash
+./run.sh <DESIGN_NAME> <TECH_DIR> <DESIGN_DIR> <OUTPUT_DIR> [-t <tcl_name>]
+```
+- `<DESIGN_NAME>`: benchmark design name, e.g., `aes_cipher_top`.
+- `<TECH_DIR>`: technology root, e.g., `/ISPD26-Contest/Platform/ASAP7`.
+- `<DESIGN_DIR>`: scenario folder containing `contest.v/def/sdc`.
+- `<OUTPUT_DIR>`: destination for generated `contest.v` and `contest.def`.
+- `-t <tcl_name>`: optional; picks `solution/tcl/<tcl_name>.tcl` (default `baseline`).
 
 ## Example
+Run the baseline Tcl on a specific scenario:
 ```bash
 ./run.sh aes_cipher_top \
   /ISPD26-Contest/Platform/ASAP7 \
   /ISPD26-Contest/Benchmarks/aes_cipher_top/TCP_250_UTIL_0.40 \
   /ISPD26-Contest/output/aes_cipher_top/TCP_250_UTIL_0.40 \
-  RUN_BASELINE=1
+  -t baseline
+```
+
+## What the baseline Tcl does
+The default flow (`solution/tcl/baseline.tcl`) loads ASAP7 LEF/LIB, reads the provided netlist/DEF/SDC, sets RC, runs `repair_design` and `repair_timing` for legalization/cleanup, then writes `contest.v` and `contest.def` to your output directory.
+
+## Batch helper
+To sweep multiple benchmarks, use `solution/test/test_bench.sh`:
+```bash
+# Run all bundled cases with baseline.tcl
+./solution/test/test_bench.sh -a
+
+# Run a subset with a different Tcl
+./solution/test/test_bench.sh -d aes_cipher_top ariane -t baseline
 ```
