@@ -1,5 +1,7 @@
 # Solution Runner
 
+Start here if you're new: see container setup in `solution/docker/README.md`.
+
 `run.sh` is the entrypoint for running a single ISPD26 benchmark through OpenROAD. It wires up the environment, launches the chosen Tcl flow, and writes outputs to the directory you provide.
 
 ## Requirements
