@@ -56,6 +56,7 @@ puts "\[INFO\] Start OpenROAD RSZ ..."
 
 repair_design
 repair_timing -setup -skip_gate_cloning -skip_pin_swap 
+detailed_placement
 
 # -------------------------------
 # 5) Write outputs
