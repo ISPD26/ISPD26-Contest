@@ -57,8 +57,6 @@ repair_timing -setup -skip_gate_cloning -skip_pin_swap
 set end_rsz [clock seconds]
 puts "\[INFO\] OR RSZ runtime:   [expr {$end_rsz - $start_rsz}] second"
 
-write_def ${folder}/${design_name}_baseline.def
-write_verilog ${folder}/${design_name}_baseline.v
 
 
 set start_flow [clock seconds]
@@ -79,6 +77,10 @@ if {$placement_legal} {
     puts stderr "WARN: Placement still illegal after detailed_placement."
   }
 }
+
+# Write out baseline results after detailed placement
+write_def ${folder}/${design_name}_baseline.def
+write_verilog ${folder}/${design_name}_baseline.v
 
 
 # ================== (3) global route with auto-legalize retry ==================

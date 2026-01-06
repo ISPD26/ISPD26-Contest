@@ -67,7 +67,7 @@ Email: ispd26contest@gmail.com
 | 24   | ECOS-OPT         | Institute of Computing Technology, Chinese Academy of Sciences |
 | 25   | NYCUVDALAB        | Institute of Electronics, National Yang Ming Chiao Tung Unniversity |
 | 26   | The Phoenix Gate Guardians      | The Chinese University of Hong Kong |
-| 27   | \\(^(oo)^)/      | National Tsing Hua University |
+| 27   | \\(^(oo)^)/      | National Tsing Hua University, The Chinese University of Hong Kong |
 | 28   | Masters of Chatgpt      | Yuan Ze University |
 | 29   | HLFC      | National Tsing Hua University |
 | 30   | ECO      | Independent |
