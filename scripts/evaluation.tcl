@@ -40,22 +40,14 @@ source $rc_file
 set_cmd_units -time ns -capacitance pF -current mA -voltage V -resistance kOhm -distance um -power mW
 set_units -power mW
 
-# ================== (2) legalization if needed ==================
+# ================== (2) Check placement legality ==================
 puts "### Check placement legality ###"
 set placement_legal [is_placement_legal]
 if {$placement_legal} {
-  puts "Placement is legal; skip legalization."
+  puts "Placement is legal"
 } else {
-  puts "Placement NOT legal; running detailed_placement..."
-
-  detailed_placement
-  # Best-effort re-check
-  set placement_legal [is_placement_legal]
-  if {$placement_legal} {
-    puts "Placement legalized."
-  } else {
-    puts stderr "WARN: Placement still illegal after detailed_placement."
-  }
+  puts stderr "ERROR: Placement is NOT legal"
+  exit 1
 }
 
 # ================== (3) global route with auto-legalize retry ==================
