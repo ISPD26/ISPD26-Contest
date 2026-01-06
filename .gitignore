@@ -1,1 +1,3 @@
 *.log
+solution/output/
+Benchmarks
