@@ -15,16 +15,21 @@ set start [clock seconds]
 # -------------------------------
 read_lef  $tech_dir/lef/asap7_tech_1x_201209.lef
 
-foreach lef [glob -nocomplain $tech_dir/lef/asap7sc7p5t_28_*_1x_220121a.lef] {
+foreach lef [lsort [glob -nocomplain $tech_dir/lef/asap7sc7p5t_28_*_1x_220121a.lef]] {
   read_lef $lef
 }
-foreach lef [glob -nocomplain $tech_dir/lef/sram_asap7_*.lef] {
+foreach lef [lsort [glob -nocomplain $tech_dir/lef/sram_asap7_*.lef]] {
   read_lef $lef
 }
 read_lef $tech_dir/lef/fakeram_256x64.lef
-foreach lib [glob -nocomplain $tech_dir/lib/*.lib] {
+
+foreach lib [lsort [glob -nocomplain $tech_dir/lib/asap7sc7p5t_*.lib]] {
   read_liberty $lib
 }
+foreach lib [lsort [glob -nocomplain $tech_dir/lib/sram_asap7_*.lib]] {
+  read_liberty $lib
+}
+read_liberty $tech_dir/lib/fakeram_256x64.lib
 
 # -------------------------------
 # 2) Read design
