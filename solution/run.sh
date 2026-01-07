@@ -58,20 +58,41 @@ done
 #######################################
 # Derived paths
 #######################################
-TCL_FILE="${TCL_DIR}/${TCL_NAME}.tcl"
+TEMPLATE_FILE="${TCL_DIR}/${TCL_NAME}.tcl"
 
 #######################################
 # Sanity checks
 #######################################
-if [[ ! -f "$TCL_FILE" ]]; then
-  echo "Error: Tcl script not found: $TCL_FILE" >&2
+if [[ ! -f "$TEMPLATE_FILE" ]]; then
+  echo "Error: Template file not found: $TEMPLATE_FILE" >&2
   exit 2
 fi
 
 #######################################
-# Export environment variables for Tcl
+# Prepare temporary TCL directory
+# Preserve the full DESIGN_DIR path structure
 #######################################
-export DESIGN_NAME TECH_DIR DESIGN_DIR OUTPUT_DIR
+TEMP_TCL_DIR="${TCL_DIR}/temp/${DESIGN_NAME}/$(basename "$DESIGN_DIR")"
+mkdir -p "$TEMP_TCL_DIR"
+
+GENERATED_TCL_FILE="${TEMP_TCL_DIR}/${TCL_NAME}.tcl"
+
+#######################################
+# Generate TCL file from template
+# Replace environment variable references with actual values
+#######################################
+echo "Generating TCL file: $GENERATED_TCL_FILE"
+
+sed -e "s|\$::env(DESIGN_NAME)|\"${DESIGN_NAME}\"|g" \
+    -e "s|\$::env(TECH_DIR)|\"${TECH_DIR}\"|g" \
+    -e "s|\$::env(DESIGN_DIR)|\"${DESIGN_DIR}\"|g" \
+    -e "s|\$::env(OUTPUT_DIR)|\"${OUTPUT_DIR}\"|g" \
+    "$TEMPLATE_FILE" > "$GENERATED_TCL_FILE"
+
+if [[ ! -f "$GENERATED_TCL_FILE" ]]; then
+  echo "Error: Failed to generate TCL file: $GENERATED_TCL_FILE" >&2
+  exit 4
+fi
 
 #######################################
 # Prepare output directory
@@ -81,8 +102,9 @@ mkdir -p "$OUTPUT_DIR"
 #######################################
 # Run OpenROAD
 #######################################
+echo "Running OpenROAD with generated TCL file..."
 openroad \
   -threads "$(nproc)" \
   -no_init \
   -exit \
-  "$TCL_FILE"
+  "$GENERATED_TCL_FILE"
