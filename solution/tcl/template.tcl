@@ -54,22 +54,12 @@ set_cmd_units -time ns -capacitance pF -current mA -voltage V -resistance kOhm -
 set_units -power mW
 
 set start_rsz [clock seconds]
-
-
-
-
-
 # -------------------------------
 # 4) Tool 
 # -------------------------------
 puts "\[INFO\] Start OpenROAD RSZ ..."
 
 # implement your optimization flow here...
-
-
-
-
-
 
 
 # -------------------------------
