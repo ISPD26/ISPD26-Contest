@@ -69,8 +69,8 @@ detailed_placement
 set end_rsz [clock seconds]
 puts "\[INFO\] OR RSZ runtime:   [expr {$end_rsz - $start_rsz}] second"
 
-write_verilog $out_dir/contest.v
-write_def     $out_dir/contest.def
+write_verilog $out_dir/$design_name.v
+write_def     $out_dir/$design_name.def
 
 exit
 TCL

@@ -147,10 +147,10 @@ for entry in "${benchmarks[@]}"; do
   # Step 1: run main flow
   ###################################
   "$RUN_SH" \
-    "$design_name" \
-    "$TECH_DIR" \
     "$design_dir" \
+    "$TECH_DIR" \
     "$out_dir" \
+    "$design_name" \
     -t "$TCL_NAME" \
     > "$log_file"
 

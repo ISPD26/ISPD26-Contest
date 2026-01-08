@@ -20,10 +20,10 @@ Start here if you're new: see container setup in `solution/docker/README.md`.
 ## Example
 Run the baseline Tcl on a specific scenario:
 ```bash
-./run.sh aes_cipher_top \
+./run.sh /ISPD26-Contest/Benchmarks/aes_cipher_top/TCP_250_UTIL_0.40 \
   /ISPD26-Contest/Platform/ASAP7 \
-  /ISPD26-Contest/Benchmarks/aes_cipher_top/TCP_250_UTIL_0.40 \
   /ISPD26-Contest/output/aes_cipher_top/TCP_250_UTIL_0.40 \
+  aes_cipher_top \
   -t baseline
 ```
 

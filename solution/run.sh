@@ -7,13 +7,13 @@
 TCL_NAME="baseline"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TCL_DIR="$SCRIPT_DIR/tcl"
-
+BIN_DIR="$SCRIPT_DIR/bin"
 #######################################
 # Usage
 #######################################
 usage() {
   echo "Usage:"
-  echo "  $0 <DESIGN_NAME> <TECH_DIR> <DESIGN_DIR> <OUTPUT_DIR> [options]"
+  echo "  $0 <DESIGN_DIR> <TECH_DIR> <OUTPUT_DIR> <DESIGN_NAME> [options]"
   echo
   echo "Options:"
   echo "  -t <tcl_name>   Use specified tcl script (default: baseline)"
@@ -32,10 +32,11 @@ fi
 #######################################
 # Required positional arguments
 #######################################
-DESIGN_NAME="$1"
+DESIGN_DIR="$1"
 TECH_DIR="$2"
-DESIGN_DIR="$3"
-OUTPUT_DIR="$4"
+OUTPUT_DIR="$3"
+DESIGN_NAME="$4"
+
 shift 4
 
 #######################################
@@ -108,3 +109,5 @@ openroad \
   -no_init \
   -exit \
   "$GENERATED_TCL_FILE"
+
+# $BIN_DIR/gen_changelist "$DESIGN_DIR/contest.def" "$OUTPUT_DIR/$DESIGN_NAME.def" "$OUTPUT_DIR/$DESIGN_NAME.changelist"
