@@ -3,9 +3,9 @@
 ## Container
 
 The intention of this container is to provide a consistent interactive environment for development and evaluation. It is based on Ubuntu 24.04 and contains:
-- OpenROAD - Binary installation with sources at `/OpenROAD` (Commit `7559f9664a6561cc277e4ec8161b742573e7d521`)
+- OpenROAD - Binary installation with sources at `/OpenROAD` (Commit `7559f96`)
     - This version is patched to support the [evaluator](../scripts/evaluation.tcl), see [`ord.patch`](ord.patch) or [this repository](https://github.com/sakundu/OpenROAD/tree/ispd26) if you wish to build your own version.
-- OpenROAD-Flow-Scripts (commit `26b521c49218eb10f4274d782e420cdc824adbc3`)
+- OpenROAD-Flow-Scripts (commit `26b521c`)
 - Conda 25.7.0 (Miniconda)
 - Miscellaneous tools including Yosys.
 
@@ -34,6 +34,8 @@ singularity run -o my_overlay.img --fakeroot --nv docker://udxs/ispd26:v3
 - A `setup.sh` that installs all necessary dependencies (incl. the ability to use `apt`, `pip`, and `conda`) and performs compilation
 - A `run.sh` that will run your developed tool to produce the required DEF/Verilog output from a given input design.
 - Any necessary data or code that is not already retrieved in your `setup.sh`.
+
+The ZIP file should be named **TeamID_solution.zip** and submitted via the Dropbox [link](https://www.dropbox.com/request/EeQFhzvEIIHQEpM2jw2c). Contestants need to share the **cksum value** of the submission ZIP file via email (ispd26contest@gmail.com).
 
 The contents of this ZIP file will be placed in `/opt/contest` in a fresh Apptainer container imaged as described above. `setup.sh` should install packages and 
 set up any artifacts required for running your submission within the `/opt/contest` directory.
