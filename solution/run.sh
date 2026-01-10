@@ -105,7 +105,6 @@ mkdir -p "$OUTPUT_DIR"
 #######################################
 echo "Running OpenROAD with generated TCL file..."
 openroad \
-  -threads "$(nproc)" \
   -no_init \
   -exit \
   "$GENERATED_TCL_FILE"
