@@ -8,6 +8,7 @@ RUN_SH="/ISPD26-Contest/solution/run.sh"
 TECH_DIR="/ISPD26-Contest/Platform/ASAP7"
 BENCH_ROOT="/ISPD26-Contest/Benchmarks"
 OUT_ROOT="/ISPD26-Contest/solution/output"
+TEST_DIR="/ISPD26-Contest/solution/test"
 
 #######################################
 # Default options
@@ -166,6 +167,9 @@ for entry in "${benchmarks[@]}"; do
     echo
     source eval.sh
     cd "$current_dir"
+
+    python "$TEST_DIR/cal_total_score.py" "$out_dir"
+    
   else
     echo "Warning: eval.sh not found for $design_name"
   fi
