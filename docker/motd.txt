@@ -10,7 +10,7 @@ ISPD-26 Contest Environment v1
         Based on Ubuntu 24.04.
 
 
-OpenROAD sources (patched, see README) are located in /OpenROAD (Commit 7559f9664a6561cc277e4ec8161b742573e7d521).
+OpenROAD sources (patched, see README) are located in /OpenROAD.
 
-OpenROAD-flow-scripts is located in /OpenROAD-flow-scripts (Commit 66e441c6cbb6cb9ac871726fc8373317f164ed84) 
+OpenROAD-flow-scripts is located in /OpenROAD-flow-scripts.
 
