@@ -3,6 +3,89 @@ import csv
 import sys
 from pathlib import Path
 
+baseline = {
+    "aes_cipher_top": {
+        "tns": -19.55,
+        "lpower": 121000000,
+        "slew_over_sum": 0.0,
+        "cap_over_sum": 0.0,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 5,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "aes_cipher_top_v2": {
+        "tns": -49.56,
+        "lpower": 117000000,
+        "slew_over_sum": 1.2,
+        "cap_over_sum": 0.02,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 4,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "ariane": {
+        "tns": -12748.79,
+        "lpower": 5670000000,
+        "slew_over_sum": 154.48,
+        "cap_over_sum": 0.01,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 49,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "ariane_v2": {
+        "tns": -31256.91,
+        "lpower": 5110000000,
+        "slew_over_sum": 0.14,
+        "cap_over_sum": 0.02,
+        "fanout_over_sum": 4.0,
+        "flow_runtime": 33,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "jpeg_encoder": {
+        "tns": -406.37,
+        "lpower": 309000000,
+        "slew_over_sum": 0.0,
+        "cap_over_sum": 0.0,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 7,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "jpeg_encoder_v2": {
+        "tns": -851.17,
+        "lpower": 213000000,
+        "slew_over_sum": 0.72,
+        "cap_over_sum": 0.0,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 6,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "bsg_chip": {
+        "tns": -119199.7,
+        "lpower": 37200000000,
+        "slew_over_sum": 832.24,
+        "cap_over_sum": 0.0,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 623,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+    "bsg_chip_v2": {
+        "tns": -90448.4,
+        "lpower": 34900000000,
+        "slew_over_sum": 444.97,
+        "cap_over_sum": 0.01,
+        "fanout_over_sum": 0.0,
+        "flow_runtime": 354,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+    },
+}
+
 
 def to_float(v, default=0.0) -> float:
     if v is None:
@@ -26,7 +109,9 @@ def compute_s_final(d: dict) -> str:
     w_flowRuntime = 1.0
     w_maxOverflow = 1.0
     w_totalOverflow = 1.0
+    ethlon = 0.000001
 
+    design = d.get("design")
     tns = to_float(d.get("tns"))
     lpower = to_float(d.get("leakage_power"))
     slew_over_sum = to_float(d.get("slew_over_sum"))
@@ -37,14 +122,14 @@ def compute_s_final(d: dict) -> str:
     total_gr_overflow = to_float(d.get("total_gr_overflow"))
 
     s_final = (
-        w_tns * tns
-        + w_lpower * lpower
-        + w_slew * slew_over_sum
-        + w_cap * cap_over_sum
-        + w_fanout * fanout_over_sum
-        + w_flowRuntime * flow_runtime
-        + w_maxOverflow * max_gr_overflow
-        + w_totalOverflow * total_gr_overflow
+        w_tns * (tns - baseline.get(design).get("tns")) / abs(baseline.get(design).get("tns") + ethlon)
+        + w_lpower * (lpower - baseline.get(design).get("lpower")) / baseline.get(design).get("lpower")
+        + w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon)
+        + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon)
+        + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
+        + w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime")
+        + w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon)
+        + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
     )
 
     return str(s_final)
