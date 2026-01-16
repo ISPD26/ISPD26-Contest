@@ -123,7 +123,7 @@ def compute_s_final(d: dict) -> str:
 
     s_final = (
         w_tns * (tns - baseline.get(design).get("tns")) / abs(baseline.get(design).get("tns") + ethlon)
-        + w_lpower * (lpower - baseline.get(design).get("lpower")) / baseline.get(design).get("lpower")
+        + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
         + w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon)
         + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon)
         + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
