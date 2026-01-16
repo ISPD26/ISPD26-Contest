@@ -141,14 +141,16 @@ def parse_log(log_path: Path) -> Dict[str, Any]:
                 continue  # don’t let these lines hit other parsers
 
             # ---- design name ----
-            if m["design"] is None:
-                m1 = re.search(r"^\s*design:\s*(\S+)", line, re.IGNORECASE)
-                if m1:
-                    m["design"] = m1.group(1)
-                else:
-                    m2 = re.search(r"^\[INFO ODB-0128\]\s*Design:\s*(\S+)", line)
-                    if m2:
-                        m["design"] = m2.group(1)
+            m2 = re.search(r"^\s*design:\s*(\S+)", line, re.IGNORECASE)
+            if m2:
+                # Prefer the 2nd one (metrics): overwrite whatever was captured before
+                m["design"] = m2.group(1)
+            else:
+                # Fallback: only capture ODB design if design is still not set
+                if m["design"] is None:
+                    m1 = re.search(r"^\[INFO ODB-0128\]\s*Design:\s*(\S+)", line)
+                    if m1:
+                        m["design"] = m1.group(1)
 
             # ---- total insts ----
             if m["total_insts"] is None:
