@@ -131,7 +131,7 @@ for entry in "${benchmarks[@]}"; do
   fi
 
   design_dir="$BENCH_ROOT/$design_name/$scenario"
-  out_dir="$OUT_ROOT/$design_name/$scenario"
+  out_dir="$OUT_ROOT/${TCL_NAME}/$design_name/$scenario"
   log_file="$out_dir/run.log"
 
   echo "=================================================="
@@ -165,7 +165,7 @@ for entry in "${benchmarks[@]}"; do
     echo
     echo "Running evaluation..."
     echo
-    source eval.sh
+    source eval.sh ${TCL_NAME}
     cd "$current_dir"
 
     python "$TEST_DIR/cal_total_score.py" "$out_dir"

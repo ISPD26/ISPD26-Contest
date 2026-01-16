@@ -1,10 +1,12 @@
+TCL_NAME="$1"
+
 export TOP_PROJ_DIR="/ISPD26-Contest"
 export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 
 export DESIGN_NAME="bsg_chip_v2"
 export FOLDER_NAME="TCP_1300_UTIL_0.50"
 
-OUT_DIR="${TOP_PROJ_DIR}/solution/output/${DESIGN_NAME}/${FOLDER_NAME}"
+export OUT_DIR="${TOP_PROJ_DIR}/solution/output/${TCL_NAME}/${DESIGN_NAME}/${FOLDER_NAME}"
 
 mkdir -p "${OUT_DIR}"
 export LOG_FILE="${OUT_DIR}/evaluation.log"
