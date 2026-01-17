@@ -9,16 +9,16 @@ wsl solution/docker/get_into_docker.sh
 ```
 This script runs:
 ```
-docker run -it --rm -v ${PWD}:/ISPD26-Contest udxs/ispd26:v3
+docker run -it --rm -v ${PWD}:/ISPD26-Contest udxs/ispd26:v4
 ```
 - `-it`: interactive shell.
 - `--rm`: container is removed on exit.
 - `-v ${PWD}:/ISPD26-Contest`: mounts your repo into the container.
-- `udxs/ispd26:v3`: contest image with required tooling.
+- `udxs/ispd26:v4`: contest image with required tooling.
 
 ## Manual run (if script not executable)
 ```bash
-docker run -it --rm -v "$(pwd)":/ISPD26-Contest udxs/ispd26:v3
+docker run -it --rm -v "$(pwd)":/ISPD26-Contest udxs/ispd26:v4
 ```
 
 ## Notes
