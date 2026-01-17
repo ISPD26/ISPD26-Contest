@@ -6,6 +6,7 @@ from pathlib import Path
 baseline = {
     "aes_cipher_top": {
         "tns": -19.55,
+        "dpower": 74479000000,
         "lpower": 121000000,
         "slew_over_sum": 0.0,
         "cap_over_sum": 0.0,
@@ -16,6 +17,7 @@ baseline = {
     },
     "aes_cipher_top_v2": {
         "tns": -49.56,
+        "dpower": 301883000000,
         "lpower": 117000000,
         "slew_over_sum": 1.2,
         "cap_over_sum": 0.02,
@@ -26,6 +28,7 @@ baseline = {
     },
     "ariane": {
         "tns": -12748.79,
+        "dpower": 143330000000,
         "lpower": 5670000000,
         "slew_over_sum": 154.48,
         "cap_over_sum": 0.01,
@@ -36,6 +39,7 @@ baseline = {
     },
     "ariane_v2": {
         "tns": -31256.91,
+        "dpower": 141890000000,
         "lpower": 5110000000,
         "slew_over_sum": 0.14,
         "cap_over_sum": 0.02,
@@ -46,6 +50,7 @@ baseline = {
     },
     "jpeg_encoder": {
         "tns": -406.37,
+        "dpower": 123691000000,
         "lpower": 309000000,
         "slew_over_sum": 0.0,
         "cap_over_sum": 0.0,
@@ -56,6 +61,7 @@ baseline = {
     },
     "jpeg_encoder_v2": {
         "tns": -851.17,
+        "dpower": 166787000000,
         "lpower": 213000000,
         "slew_over_sum": 0.72,
         "cap_over_sum": 0.0,
@@ -66,6 +72,7 @@ baseline = {
     },
     "bsg_chip": {
         "tns": -119199.7,
+        "dpower": 773800000000,
         "lpower": 37200000000,
         "slew_over_sum": 832.24,
         "cap_over_sum": 0.0,
@@ -76,6 +83,7 @@ baseline = {
     },
     "bsg_chip_v2": {
         "tns": -90448.4,
+        "dpower": 1735100000000,
         "lpower": 34900000000,
         "slew_over_sum": 444.97,
         "cap_over_sum": 0.01,
@@ -113,6 +121,7 @@ def compute_s_final(d: dict) -> str:
 
     design = d.get("design")
     tns = to_float(d.get("tns"))
+    dpower = to_float(d.get("total_power")) - to_float(d.get("leakage_power"))
     lpower = to_float(d.get("leakage_power"))
     slew_over_sum = to_float(d.get("slew_over_sum"))
     cap_over_sum = to_float(d.get("cap_over_sum"))
@@ -123,6 +132,7 @@ def compute_s_final(d: dict) -> str:
 
     s_final = (
         w_tns * (-tns + baseline.get(design).get("tns")) / abs(-baseline.get(design).get("tns") + ethlon)
+        + w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower")
         + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
         + w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon)
         + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon)
