@@ -1,5 +1,5 @@
 apt-get -y update
-apt-get -y install git build-essential gcc g++ wget make time x11-apps vim nano sxiv python3-pip
+apt-get -y install git build-essential gcc g++ wget make time x11-apps vim nano sxiv python3-pip clangd-20
 pip install pyaml
 
 mkdir -p /opt/miniconda3
@@ -7,7 +7,7 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /o
 bash /opt/miniconda3/miniconda.sh -b -u -p /opt/miniconda3
 
 cd opt
-    wget  "https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.4-1_amd64.deb" -O klayout.deb
+wget  "https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.4-1_amd64.deb" -O klayout.deb
 
 apt-get -y install ./klayout.deb
 
@@ -33,7 +33,7 @@ cd OpenROAD-flow-scripts
 git reset --hard 26b521c49218eb10f4274d782e420cdc824adbc3
 
 cd /
-git clone https://github.com/The-OpenROAD-Project/OpenROAD.git
+git clone https://github.com/sakundu/OpenROAD.git
 cd OpenROAD
-git reset --hard  7559f9664a6561cc277e4ec8161b742573e7d521
+git reset --hard  b84a4ac3ae1731dccb0fc991410038f91a50af83
 git submodule update --init --recursive
