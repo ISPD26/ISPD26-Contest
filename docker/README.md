@@ -3,13 +3,13 @@
 ## Container
 
 The intention of this container is to provide a consistent interactive environment for development and evaluation. It is based on Ubuntu 24.04 and contains:
-- OpenROAD - Binary installation with sources at `/OpenROAD` (Commit `7559f96`)
-    - This version is patched to support the [evaluator](../scripts/evaluation.tcl), see [`ord.patch`](ord.patch) or [this repository](https://github.com/sakundu/OpenROAD/tree/ispd26) if you wish to build your own version.
+- OpenROAD - Binary installation with sources at `/OpenROAD` (Fork Commit `b84a4ac`)
+    - This version is patched to support the [evaluator](../scripts/evaluation.tcl), see [this repository](https://github.com/sakundu/OpenROAD/tree/ispd26) if you wish to build your own version.
 - OpenROAD-Flow-Scripts (commit `26b521c`)
 - Conda 25.7.0 (Miniconda)
 - Miscellaneous tools including Yosys.
 
-See the [Dockerfile here](./dockerfile). A precompiled image can be retrieved from the Docker Hub [`udxs/ispd26:v3`](https://hub.docker.com/repository/docker/udxs/ispd26/tags/v3/sha256-bc9afb6b3e119c91a3d9e85f4c184fe5318742b3bf5920fdf485e70295a51311). This image is also compatbile with Apptainer (formerly Singularity) - see below.
+See the [Dockerfile here](./dockerfile). A precompiled image can be retrieved from the Docker Hub [`udxs/ispd26:v4`](https://hub.docker.com/repository/docker/udxs/ispd26/tags/v4/sha256-d4e0f47c5c9628aece8ff02ebcd70cc4dfa8a5442046720891841fc77e8afacb). This image is also compatbile with Apptainer (formerly Singularity) - see below.
 
 ### Using Apptainer (Singularity)
 
@@ -22,9 +22,9 @@ Thus, to support package installation, you need to create a writable "overlay" l
 singularity overlay create --fakeroot -S -s 20480 my_overlay.img 
 
 # For CPU only operation
-singularity run -o my_overlay.img --fakeroot docker://udxs/ispd26:v3
+singularity run -o my_overlay.img --fakeroot docker://udxs/ispd26:v4
 # For CUDA-capable NVIDIA GPUs:
-singularity run -o my_overlay.img --fakeroot --nv docker://udxs/ispd26:v3
+singularity run -o my_overlay.img --fakeroot --nv docker://udxs/ispd26:v4
 ```
 
 
