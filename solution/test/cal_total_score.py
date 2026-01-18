@@ -11,9 +11,11 @@ baseline = {
         "slew_over_sum": 0.0,
         "cap_over_sum": 0.0,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 5,
         "flow_runtime": 5,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "aes_cipher_top_v2": {
         "tns": -49.56,
@@ -22,9 +24,11 @@ baseline = {
         "slew_over_sum": 1.2,
         "cap_over_sum": 0.02,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 4,
         "flow_runtime": 4,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "ariane": {
         "tns": -12748.79,
@@ -33,9 +37,11 @@ baseline = {
         "slew_over_sum": 154.48,
         "cap_over_sum": 0.01,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 60,
         "flow_runtime": 49,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "ariane_v2": {
         "tns": -31256.91,
@@ -44,9 +50,11 @@ baseline = {
         "slew_over_sum": 0.14,
         "cap_over_sum": 0.02,
         "fanout_over_sum": 4.0,
+        "tool_runtime": 33,
         "flow_runtime": 33,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "jpeg_encoder": {
         "tns": -406.37,
@@ -55,9 +63,11 @@ baseline = {
         "slew_over_sum": 0.0,
         "cap_over_sum": 0.0,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 7,
         "flow_runtime": 7,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "jpeg_encoder_v2": {
         "tns": -851.17,
@@ -66,9 +76,11 @@ baseline = {
         "slew_over_sum": 0.72,
         "cap_over_sum": 0.0,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 6,
         "flow_runtime": 6,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "bsg_chip": {
         "tns": -119199.7,
@@ -77,9 +89,11 @@ baseline = {
         "slew_over_sum": 832.24,
         "cap_over_sum": 0.0,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 700,
         "flow_runtime": 623,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
     "bsg_chip_v2": {
         "tns": -90448.4,
@@ -88,9 +102,11 @@ baseline = {
         "slew_over_sum": 444.97,
         "cap_over_sum": 0.01,
         "fanout_over_sum": 0.0,
+        "tool_runtime": 400,
         "flow_runtime": 354,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
+        "displacement": 0.0,
     },
 }
 
@@ -117,30 +133,39 @@ def compute_s_final(d: dict) -> str:
     w_flowRuntime = 1.0
     w_maxOverflow = 1.0
     w_totalOverflow = 1.0
+    w_toolRuntime = 0.0
+    w_dis = 0.0
     ethlon = 0.000001
 
     design = d.get("design")
+    Chc = to_float(d.get("Chc"),default=1.0)    
     tns = to_float(d.get("tns"))
     dpower = to_float(d.get("total_power")) - to_float(d.get("leakage_power"))
     lpower = to_float(d.get("leakage_power"))
     slew_over_sum = to_float(d.get("slew_over_sum"))
     cap_over_sum = to_float(d.get("cap_over_sum"))
     fanout_over_sum = to_float(d.get("fanout_over_sum"))
+    tool_runtime = to_float(d.get("tool_runtime"))
     flow_runtime = to_float(d.get("flow_runtime"))
     max_gr_overflow = to_float(d.get("max_gr_overflow"))
     total_gr_overflow = to_float(d.get("total_gr_overflow"))
+    displacement = to_float(d.get("displacement"))
 
-    s_final = (
-        w_tns * (-tns + baseline.get(design).get("tns")) / abs(-baseline.get(design).get("tns") + ethlon)
-        + w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower")
-        + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
-        + w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon)
-        + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon)
-        + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
-        + w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime")
-        + w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon)
-        + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
-    )
+    SPPA = w_tns * (-tns + baseline.get(design).get("tns")) / abs(-baseline.get(design).get("tns") + ethlon) 
+           + w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower")
+           + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
+
+    PERC = w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon)
+           + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon)
+           + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
+    
+    R = w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime") + w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime")
+
+    Pdis =  w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon)
+    Poverflow = w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon)
+                + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
+
+    s_final = Chc * (SPPA - PERC - R - Pdis - Poverflow)       
 
     return str(s_final)
 
