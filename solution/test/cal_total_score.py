@@ -151,20 +151,43 @@ def compute_s_final(d: dict) -> str:
     total_gr_overflow = to_float(d.get("total_gr_overflow"))
     displacement = to_float(d.get("displacement"))
 
-    SPPA = w_tns * (-tns + baseline.get(design).get("tns")) / abs(-baseline.get(design).get("tns") + ethlon) 
-           + w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower")
-           + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
-
-    PERC = w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon)
-           + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon)
-           + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
-    
+    #SPPA = w_tns * (-tns + baseline.get(design).get("tns")) / abs(-baseline.get(design).get("tns") + ethlon) + w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower") + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
+    SPPA = (
+        w_tns * (-tns + baseline.get(design).get("tns"))
+        / abs(-baseline.get(design).get("tns") + ethlon)
+        + w_dpower
+        * (baseline.get(design).get("dpower") - dpower)
+        / baseline.get(design).get("dpower")
+        + w_lpower
+        * (baseline.get(design).get("lpower") - lpower)
+        / baseline.get(design).get("lpower")
+    )
+    #PERC = w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon) + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon) + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
+    PERC = (
+        w_slew
+        * (slew_over_sum - baseline.get(design).get("slew_over_sum"))
+        / (baseline.get(design).get("slew_over_sum") + ethlon)
+        + w_cap
+        * (cap_over_sum - baseline.get(design).get("cap_over_sum"))
+        / (baseline.get(design).get("cap_over_sum") + ethlon)
+        + w_fanout
+        * (fanout_over_sum - baseline.get(design).get("fanout_over_sum"))
+        / (baseline.get(design).get("fanout_over_sum") + ethlon)
+    )    
     R = w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime") + w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime")
 
     Pdis =  w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon)
-    Poverflow = w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon)
-                + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
 
+    #Poverflow = w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon) + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
+    Poverflow = (
+        w_maxOverflow
+        * (max_gr_overflow - baseline.get(design).get("max_gr_overflow"))
+        / (baseline.get(design).get("max_gr_overflow") + ethlon)
+        + w_totalOverflow
+        * (total_gr_overflow - baseline.get(design).get("total_gr_overflow"))
+        / (baseline.get(design).get("total_gr_overflow") + ethlon)
+    )
+    
     s_final = Chc * (SPPA - PERC - R - Pdis - Poverflow)       
 
     return str(s_final)
