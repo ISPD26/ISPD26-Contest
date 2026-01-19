@@ -4,7 +4,7 @@
 #######################################
 # Path settings
 #######################################
-RUN_SH="/ISPD26-Contest/solution/run.sh"
+SOLUTION_DIR="/ISPD26-Contest/solution"
 TECH_DIR="/ISPD26-Contest/Platform/ASAP7"
 BENCH_ROOT="/ISPD26-Contest/Benchmarks"
 OUT_ROOT="/ISPD26-Contest/solution/output"
@@ -14,6 +14,7 @@ TEST_DIR="/ISPD26-Contest/solution/test"
 # Default options
 #######################################
 TCL_NAME="baseline"
+RUN_SCRIPT="run.sh"
 
 #######################################
 # Benchmark list
@@ -46,13 +47,15 @@ list_available_designs() {
 #######################################
 usage() {
   echo "Usage:"
-  echo "  $0 -a [-t <tcl_name>]"
-  echo "  $0 -d <design1> <design2> ... [-t <tcl_name>]"
+  echo "  $0 -a [-t <tcl_name>] [-s <script>]"
+  echo "  $0 -d <design1> <design2> ... [-t <tcl_name>] [-s <script>]"
   echo
   echo "Options:"
   echo "  -a               Run all benchmark cases"
   echo "  -d <design...>   Run specified design(s)"
   echo "  -t <tcl_name>    Use specified tcl script (default: baseline)"
+  echo "  -s <script>      Use specified run script (default: run.sh)"
+  echo "                   Use 'wq' for run_wqtang.sh"
   echo
   list_available_designs
   exit 1
@@ -82,6 +85,15 @@ while [[ $# -gt 0 ]]; do
       TCL_NAME="$2"
       shift 2
       ;;
+    -s)
+      [[ $# -lt 2 ]] && usage
+      if [[ "$2" == "wq" ]]; then
+        RUN_SCRIPT="run_wqtang.sh"
+      else
+        RUN_SCRIPT="$2"
+      fi
+      shift 2
+      ;;
     -h|--help)
       usage
       ;;
@@ -100,8 +112,10 @@ if [[ "$run_all" = false && ${#selected_designs[@]} -eq 0 ]]; then
   usage
 fi
 
+RUN_SH="$SOLUTION_DIR/$RUN_SCRIPT"
+
 if [[ ! -x "$RUN_SH" ]]; then
-  echo "Error: run.sh not found or not executable: $RUN_SH" >&2
+  echo "Error: $RUN_SCRIPT not found or not executable: $RUN_SH" >&2
   exit 2
 fi
 
@@ -136,6 +150,7 @@ for entry in "${benchmarks[@]}"; do
 
   echo "=================================================="
   echo "Running: $design_name / $scenario"
+  echo "Script : $RUN_SCRIPT"
   echo "Tcl    : ${TCL_NAME}.tcl"
   echo "Design dir: $design_dir"
   echo "Output dir: $out_dir"
@@ -158,19 +173,26 @@ for entry in "${benchmarks[@]}"; do
   ###################################
   # Step 2: run evaluation script
   ###################################
-  eval_dir="/ISPD26-Contest/scripts/${design_name}"
+  # eval_dir="/ISPD26-Contest/scripts/${design_name}"
 
-  if [[ -d "$eval_dir" && -f "$eval_dir/eval.sh" ]]; then
-    cd "$eval_dir"
-    echo
-    echo "Running evaluation..."
-    echo
-    source eval.sh ${TCL_NAME}
-    cd "$current_dir"
+  # if [[ -d "$eval_dir" && -f "$eval_dir/eval.sh" ]]; then
+  #   cd "$eval_dir"
+  #   echo
+  #   echo "Running evaluation..."
+  #   echo
+  #   source eval.sh ${TCL_NAME}
+  #   cd "$current_dir"
 
-    python "$TEST_DIR/cal_total_score.py" "$out_dir"
+  #   python "$TEST_DIR/cal_total_score.py" "$out_dir"
     
-  else
-    echo "Warning: eval.sh not found for $design_name"
-  fi
+  # else
+  #   echo "Warning: eval.sh not found for $design_name"
+  # fi
+  
+  ${SOLUTION_DIR}/scripts/eval.sh \
+    "$design_dir" \
+    "$TECH_DIR" \
+    "$out_dir" \
+    "$design_name" \
+
 done
