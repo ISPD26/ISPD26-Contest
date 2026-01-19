@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//_SB_Place/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
