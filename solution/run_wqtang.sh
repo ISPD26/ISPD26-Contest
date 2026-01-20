@@ -52,7 +52,10 @@ ORIGINAL_VERILOG="$DESIGN_DIR/contest.v"
 cp "$ORIGINAL_DEF" "$PATH_ORIGINAL/$DESIGN_NAME.def"
 cp "$ORIGINAL_VERILOG" "$PATH_ORIGINAL/$DESIGN_NAME.v"
 
+# generate original evaluation and ans files
 ./scripts/eval.sh "$DESIGN_DIR" "$TECH_DIR" "$PATH_ORIGINAL" "$DESIGN_NAME" > "$PATH_ORIGINAL/output.log" 2>&1
+
+# write file to output if its score is better than the best one in output dir
 ./scripts/write_ans.sh "$DESIGN_NAME" "$PATH_ORIGINAL" "$OUTPUT_DIR" >> "$PATH_ORIGINAL/output.log" 2>&1
 
 #######################################
@@ -61,7 +64,7 @@ cp "$ORIGINAL_VERILOG" "$PATH_ORIGINAL/$DESIGN_NAME.v"
 
 
 optimize_baseline() {
-    local INPUT_PATH="${1}"
+    # local INPUT_PATH="${1}"
     local OPT_NAME="${2}"
     local OPT_OUTPUT_PATH="$PATH_OUTPUT_TEMP_DIR/${OPT_NAME}"
     mkdir -p "$OPT_OUTPUT_PATH/"
@@ -71,7 +74,7 @@ optimize_baseline() {
 }
 
 optimize_openroad_slew() {
-    local INPUT_PATH="${1}"
+    # local INPUT_PATH="${1}"
     local OPT_NAME="${2}"
     local SLEW_MARGIN="${3}"
     local OPT_OUTPUT_PATH="$PATH_OUTPUT_TEMP_DIR/${OPT_NAME}_SLEW_MARGIN_${SLEW_MARGIN}"
@@ -89,10 +92,13 @@ optimize_openroad_slew() {
 #######################################
 
 START_TIME=$(date +%s)
-
+# run different optimization strategies in parallel.
 optimize_baseline "$PATH_ORIGINAL" "baseline" &
 optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 20 &
+optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 30 &
 
+
+# wait for all background processes to finish
 wait
 # End timer and calculate runtime
 END_TIME=$(date +%s)
