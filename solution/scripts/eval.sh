@@ -72,3 +72,6 @@ mkdir -p "${OUTPUT_DIR}"
 
 # Parse log to CSV
 python3 "${SCRIPT_DIR}/parse_log.py" "${LOG_FILE}" --csv "${METRICS_CSV}"
+
+# Calculate total score
+python3 "${SOLUTION_DIR}/test/cal_total_score.py" "$OUTPUT_DIR"

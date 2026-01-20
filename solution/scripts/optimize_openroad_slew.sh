@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+# optimize_openroad_slew.sh - Run OpenROAD optimization with slew margin
+# Usage: optimize_openroad_slew.sh <DESIGN_DIR> <TECH_DIR> <OUTPUT_DIR> <DESIGN_NAME> <INPUT_PATH> <SLEW_MARGIN>
+
+#######################################
+# Default settings
+#######################################
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SOLUTION_DIR="$(dirname "$SCRIPT_DIR")"
+TCL_DIR="$SOLUTION_DIR/tcl"
+
+cd "$SOLUTION_DIR" || exit 1
+#######################################
+# Usage
+#######################################
+usage() {
+  echo "Usage:"
+  echo "  $0 <DESIGN_DIR> <TECH_DIR> <OUTPUT_DIR> <DESIGN_NAME> <INPUT_PATH> <SLEW_MARGIN>"
+  echo
+  echo "Arguments:"
+  echo "  DESIGN_DIR   - Path to benchmark design folder"
+  echo "  TECH_DIR     - Path to technology files"
+  echo "  OUTPUT_DIR   - Path to output directory"
+  echo "  DESIGN_NAME  - Name of the design"
+  echo "  INPUT_PATH   - Path containing input .def and .v files"
+  echo "  SLEW_MARGIN  - Slew margin value (e.g., 10, 20, 30)"
+  exit 1
+}
+
+#######################################
+# Check required arguments
+#######################################
+if [[ $# -lt 6 ]]; then
+  usage
+fi
+
+#######################################
+# Required positional arguments
+#######################################
+DESIGN_DIR="$1"
+TECH_DIR="$2"
+OUTPUT_DIR="$3"
+DESIGN_NAME="$4"
+INPUT_PATH="$5"
+SLEW_MARGIN="$6"
+
+#######################################
+# Template and derived paths
+#######################################
+TEMPLATE_FILE="${TCL_DIR}/baseline.tcl"
+TCL_NAME="slew_margin_${SLEW_MARGIN}"
+
+#######################################
+# Sanity checks
+#######################################
+if [[ ! -f "$TEMPLATE_FILE" ]]; then
+  echo "Error: Template file not found: $TEMPLATE_FILE" >&2
+  exit 2
+fi
+
+#######################################
+# Prepare temporary TCL directory
+#######################################
+TEMP_TCL_DIR="${OUTPUT_DIR}/temp/${DESIGN_NAME}/${TCL_NAME}"
+mkdir -p "$TEMP_TCL_DIR"
+
+GENERATED_TCL_FILE="${TEMP_TCL_DIR}/${TCL_NAME}.tcl"
+
+#######################################
+# Generate TCL file from template
+# 1. Replace environment variable references with actual values
+# 2. Add -slew_margin to repair_design
+# 3. Use INPUT_PATH for reading def/v files
+#######################################
+echo "Generating TCL file: $GENERATED_TCL_FILE"
+echo "  SLEW_MARGIN: $SLEW_MARGIN"
+
+# First, replace env vars and modify repair_design to add slew_margin
+sed -e "s|\$::env(DESIGN_NAME)|\"${DESIGN_NAME}\"|g" \
+    -e "s|\$::env(TECH_DIR)|\"${TECH_DIR}\"|g" \
+    -e "s|\$::env(DESIGN_DIR)|\"${DESIGN_DIR}\"|g" \
+    -e "s|\$::env(OUTPUT_DIR)|\"${OUTPUT_DIR}\"|g" \
+    -e "s|^repair_design$|repair_design -slew_margin ${SLEW_MARGIN}|g" \
+    "$TEMPLATE_FILE" > "$GENERATED_TCL_FILE"
+
+if [[ ! -f "$GENERATED_TCL_FILE" ]]; then
+  echo "Error: Failed to generate TCL file: $GENERATED_TCL_FILE" >&2
+  exit 4
+fi
+
+#######################################
+# Prepare output directory
+#######################################
+mkdir -p "$OUTPUT_DIR"
+
+#######################################
+# Run OpenROAD
+#######################################
+echo "Running OpenROAD with slew margin ${SLEW_MARGIN}..."
+openroad \
+  -no_init \
+  -exit \
+  "$GENERATED_TCL_FILE"
+
+
+./scripts/eval.sh "$DESIGN_DIR" "$TECH_DIR" "$OUTPUT_DIR" "$DESIGN_NAME"
+
+echo "Optimization with SLEW_MARGIN=${SLEW_MARGIN} completed"
