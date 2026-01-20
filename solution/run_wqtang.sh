@@ -52,31 +52,29 @@ ORIGINAL_VERILOG="$DESIGN_DIR/contest.v"
 cp "$ORIGINAL_DEF" "$PATH_ORIGINAL/$DESIGN_NAME.def"
 cp "$ORIGINAL_VERILOG" "$PATH_ORIGINAL/$DESIGN_NAME.v"
 
+./scripts/eval.sh "$DESIGN_DIR" "$TECH_DIR" "$PATH_ORIGINAL" "$DESIGN_NAME" > "$PATH_ORIGINAL/output.log" 2>&1
+./scripts/write_ans.sh "$DESIGN_NAME" "$PATH_ORIGINAL" "$OUTPUT_DIR" >> "$PATH_ORIGINAL/output.log" 2>&1
+
 #######################################
 # 1.2 optimization functions definition
 #######################################
 
 
-# in original wqtang_solution/run.sh, there are 4 functions:
-# optimize_dreamplace()
-# optimize_hybrid()
-# optimize_corner()
-# optimize_openroad()
-
-# dreamplace optimization not supported yet
-
-# optimize_corner() {
-#     mkdir -p "$OUTPUT_PATH/${2}/"
-#     ./scripts/optimize_corner.sh $DESIGN_NAME $1 "$OUTPUT_PATH/${2}/" $2 > "$OUTPUT_PATH/${2}/output.log" 2>&1
-#     optimize_dreamplace "$OUTPUT_PATH/${2}/" "${2}_dreamplace" &
-#     optimize_hybrid "$OUTPUT_PATH/${2}/" "${2}_openroad" &
-# }
+optimize_baseline() {
+    local INPUT_PATH="${1}"
+    local OPT_NAME="${2}"
+    local OPT_OUTPUT_PATH="$PATH_OUTPUT_TEMP_DIR/${OPT_NAME}"
+    mkdir -p "$OPT_OUTPUT_PATH/"
+    
+    ./scripts/optimize_openroad_baseline.sh "$DESIGN_DIR" "$TECH_DIR" "$OPT_OUTPUT_PATH" "$DESIGN_NAME" "${INPUT_PATH}" > "$OPT_OUTPUT_PATH/output.log" 2>&1
+    ./scripts/write_ans.sh "$DESIGN_NAME" "$OPT_OUTPUT_PATH" "$OUTPUT_DIR" >> "$OPT_OUTPUT_PATH/output.log" 2>&1
+}
 
 optimize_openroad_slew() {
     local INPUT_PATH="${1}"
     local OPT_NAME="${2}"
     local SLEW_MARGIN="${3}"
-    local OPT_OUTPUT_PATH="$PATH_OUTPUT_TEMP_DIR/${OPT_NAME}/SLEW_MARGIN_${SLEW_MARGIN}"
+    local OPT_OUTPUT_PATH="$PATH_OUTPUT_TEMP_DIR/${OPT_NAME}_SLEW_MARGIN_${SLEW_MARGIN}"
     mkdir -p "$OPT_OUTPUT_PATH/"
     
     ./scripts/optimize_openroad_slew.sh "$DESIGN_DIR" "$TECH_DIR" "$OPT_OUTPUT_PATH" "$DESIGN_NAME" "${INPUT_PATH}" "${SLEW_MARGIN}" > "$OPT_OUTPUT_PATH/output.log" 2>&1
@@ -92,11 +90,8 @@ optimize_openroad_slew() {
 
 START_TIME=$(date +%s)
 
-optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 10 &
+optimize_baseline "$PATH_ORIGINAL" "baseline" &
 optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 20 &
-optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 30 &
-optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 40 &
-optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 50 &
 
 wait
 # End timer and calculate runtime
