@@ -1,22 +1,24 @@
 #!/bin/bash
 
-# write_ans.sh - Simplified script to save best answer files based on TNS
-# Usage: write_ans.sh <result_path> <real_output_path>
+# write_ans.sh - Simplified script to save best answer files based on target metric
+# Usage: write_ans.sh <design_name> <result_path> <output_path> [target_metric]
 
-if [ $# -ne 3 ]; then
-    echo "Usage: $0 <design_name> <result_path> <output_path>"
+if [ $# -lt 3 ]; then
+    echo "Usage: $0 <design_name> <result_path> <output_path> [target_metric]"
+    echo "  target_metric: Column name to use for ranking (default: S_final)"
+    echo "                 Examples: tns, wns, slew_over_sum, total_power, etc."
     exit 1
 fi
 
 DESIGN_NAME=$1
 RESULT_PATH=$2
 OUTPUT_PATH=$3
+TARGET_METRIC=${4:-S_final}  # Default to "S_final" if not specified
 
 # cd to solution directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOLUTION_DIR="$(dirname "$SCRIPT_DIR")"
 cd "$SOLUTION_DIR"
-echo "Current directory: $(pwd)"
 # Extract design name from result path
 
 # Set up paths
@@ -107,27 +109,28 @@ if [ ! -f "$METRICS_CSV" ]; then
 fi
 
 #######################################
-# Extract TNS from metrics.csv
-# Format: design,...,wns,tns,...
+# Extract target metric from metrics.csv
 #######################################
-# Get header to find tns column index
-HEADER=$(head -1 "$METRICS_CSV")
-TNS_COL=$(echo "$HEADER" | tr ',' '\n' | grep -n "^tns$" | cut -d: -f1)
+# Get header to find target column index (strip carriage returns for Windows-style line endings)
+HEADER=$(head -1 "$METRICS_CSV" | tr -d '\r')
+METRIC_COL=$(echo "$HEADER" | tr ',' '\n' | grep -n "^${TARGET_METRIC}$" | cut -d: -f1)
 
-if [ -z "$TNS_COL" ]; then
-    echo "Error: Could not find 'tns' column in metrics.csv"
+if [ -z "$METRIC_COL" ]; then
+    echo "Error: Could not find '${TARGET_METRIC}' column in metrics.csv"
+    echo "Available columns: $HEADER"
     exit 1
 fi
 
-# Extract TNS value from second line (data row)
-CURRENT_TNS=$(tail -1 "$METRICS_CSV" | cut -d',' -f"$TNS_COL")
+# Extract metric value from second line (data row), strip carriage returns
+CURRENT_VALUE=$(tail -1 "$METRICS_CSV" | tr -d '\r' | cut -d',' -f"$METRIC_COL")
 
-if [ -z "$CURRENT_TNS" ]; then
-    echo "Error: Could not extract TNS value"
-    CURRENT_TNS="N/A"
+if [ -z "$CURRENT_VALUE" ]; then
+    echo "Error: Could not extract ${TARGET_METRIC} value"
+    CURRENT_VALUE="N/A"
 fi
 
-echo "Current TNS: $CURRENT_TNS"
+echo "Target metric: $TARGET_METRIC"
+echo "Current value: $CURRENT_VALUE"
 
 #######################################
 # Log entry
@@ -137,9 +140,10 @@ write_log() {
     echo "========================================" >> "$LOG_FILE"
     echo "$(date): $log_type" >> "$LOG_FILE"
     echo "Result Path: $RESULT_PATH" >> "$LOG_FILE"
-    echo "Current TNS: $CURRENT_TNS" >> "$LOG_FILE"
-    if [ -n "$EXISTING_TNS" ]; then
-        echo "Existing TNS: $EXISTING_TNS" >> "$LOG_FILE"
+    echo "Target Metric: $TARGET_METRIC" >> "$LOG_FILE"
+    echo "Current Value: $CURRENT_VALUE" >> "$LOG_FILE"
+    if [ -n "$EXISTING_VALUE" ]; then
+        echo "Existing Value: $EXISTING_VALUE" >> "$LOG_FILE"
     fi
     echo "========================================" >> "$LOG_FILE"
     echo "" >> "$LOG_FILE"
@@ -155,25 +159,25 @@ if [ ! -f "$SOL_DEF_FILE" ] || [ ! -f "$SOL_SCORE_FILE" ]; then
     write_log "INITIAL SOLUTION"
     SHOULD_UPDATE=1
 else
-    # Read existing TNS
-    EXISTING_TNS=$(grep "^TNS = " "$SOL_SCORE_FILE" 2>/dev/null | sed 's/^TNS = //')
+    # Read existing value
+    EXISTING_VALUE=$(grep "^${TARGET_METRIC} = " "$SOL_SCORE_FILE" 2>/dev/null | sed "s/^${TARGET_METRIC} = //")
     
-    if [ -z "$EXISTING_TNS" ] || [ "$EXISTING_TNS" = "N/A" ]; then
-        if [ "$CURRENT_TNS" != "N/A" ]; then
-            echo "Existing TNS is N/A, updating with valid TNS"
+    if [ -z "$EXISTING_VALUE" ] || [ "$EXISTING_VALUE" = "N/A" ]; then
+        if [ "$CURRENT_VALUE" != "N/A" ]; then
+            echo "Existing value is N/A, updating with valid value"
             write_log "REPLACING N/A"
             SHOULD_UPDATE=1
         fi
-    elif [ "$CURRENT_TNS" != "N/A" ]; then
-        # Compare TNS values (higher/less negative is better)
-        BETTER=$(awk -v current="$CURRENT_TNS" -v existing="$EXISTING_TNS" 'BEGIN { print (current > existing) ? 1 : 0 }')
+    elif [ "$CURRENT_VALUE" != "N/A" ]; then
+        # Compare values (higher/less negative is better)
+        BETTER=$(awk -v current="$CURRENT_VALUE" -v existing="$EXISTING_VALUE" 'BEGIN { print (current > existing) ? 1 : 0 }')
         
         if [ "$BETTER" = "1" ]; then
-            echo "Current TNS ($CURRENT_TNS) is better than existing ($EXISTING_TNS)"
+            echo "Current $TARGET_METRIC ($CURRENT_VALUE) is better than existing ($EXISTING_VALUE)"
             write_log "BETTER SOLUTION FOUND"
             SHOULD_UPDATE=1
         else
-            echo "Current TNS ($CURRENT_TNS) is not better than existing ($EXISTING_TNS)"
+            echo "Current $TARGET_METRIC ($CURRENT_VALUE) is not better than existing ($EXISTING_VALUE)"
             write_log "WORSE SOLUTION"
             SHOULD_UPDATE=0
         fi
@@ -221,15 +225,15 @@ if [ "$SHOULD_UPDATE" = "1" ]; then
     echo "Lock released"
     
     # Write score file
-    echo "TNS = $CURRENT_TNS" > "$SOL_SCORE_FILE"
+    echo "${TARGET_METRIC} = $CURRENT_VALUE" > "$SOL_SCORE_FILE"
     echo "Source: $RESULT_PATH" >> "$SOL_SCORE_FILE"
     
     echo "Solution files updated:"
     echo "  - $SOL_DEF_FILE"
     echo "  - $SOL_SCORE_FILE"
-    echo "  - TNS: $CURRENT_TNS"
+    echo "  - ${TARGET_METRIC}: $CURRENT_VALUE"
 else
-    echo "Solution not updated (current TNS not better)"
+    echo "Solution not updated (current $TARGET_METRIC not better)"
 fi
 
 echo "write_ans.sh completed"

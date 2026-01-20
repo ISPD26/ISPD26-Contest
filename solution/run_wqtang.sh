@@ -11,7 +11,6 @@ BIN_DIR="$SCRIPT_DIR/bin"
 
 
 cd $SCRIPT_DIR
-echo pwd: "$(pwd)"
 #######################################
 # Usage
 #######################################
@@ -81,7 +80,7 @@ optimize_openroad_slew() {
     mkdir -p "$OPT_OUTPUT_PATH/"
     
     ./scripts/optimize_openroad_slew.sh "$DESIGN_DIR" "$TECH_DIR" "$OPT_OUTPUT_PATH" "$DESIGN_NAME" "${INPUT_PATH}" "${SLEW_MARGIN}" > "$OPT_OUTPUT_PATH/output.log" 2>&1
-    ./scripts/write_ans.sh "$DESIGN_NAME" "$OPT_OUTPUT_PATH" "$OUTPUT_DIR" 
+    ./scripts/write_ans.sh "$DESIGN_NAME" "$OPT_OUTPUT_PATH" "$OUTPUT_DIR" >> "$OPT_OUTPUT_PATH/output.log" 2>&1
 }
 
 
