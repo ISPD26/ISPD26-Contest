@@ -194,5 +194,6 @@ for entry in "${benchmarks[@]}"; do
     "$TECH_DIR" \
     "$out_dir" \
     "$design_name" \
-
+    
+  python "$TEST_DIR/cal_total_score.py" "$out_dir"
 done
