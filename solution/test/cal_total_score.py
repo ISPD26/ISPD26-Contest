@@ -5,110 +5,113 @@ from pathlib import Path
 
 baseline = {
     "aes_cipher_top": {
-        "tns": -19.55,
-        "dpower": 74479000000,
-        "lpower": 121000000,
-        "slew_over_sum": 0.0,
-        "cap_over_sum": 0.0,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 5,
-        "flow_runtime": 5,
-        "max_gr_overflow": 0,
-        "total_gr_overflow": 0,
-        "displacement": 0.0,
-    },
-    "aes_cipher_top_v2": {
-        "tns": -49.56,
-        "dpower": 301883000000,
-        "lpower": 117000000,
-        "slew_over_sum": 1.2,
-        "cap_over_sum": 0.02,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 4,
-        "flow_runtime": 4,
-        "max_gr_overflow": 0,
-        "total_gr_overflow": 0,
-        "displacement": 0.0,
-    },
-    "ariane": {
-        "tns": -12748.79,
-        "dpower": 143330000000,
-        "lpower": 5670000000,
-        "slew_over_sum": 154.48,
-        "cap_over_sum": 0.01,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 60,
-        "flow_runtime": 49,
-        "max_gr_overflow": 0,
-        "total_gr_overflow": 0,
-        "displacement": 0.0,
-    },
-    "ariane_v2": {
-        "tns": -31256.91,
-        "dpower": 141890000000,
-        "lpower": 5110000000,
-        "slew_over_sum": 0.14,
-        "cap_over_sum": 0.02,
-        "fanout_over_sum": 4.0,
-        "tool_runtime": 33,
-        "flow_runtime": 33,
-        "max_gr_overflow": 0,
-        "total_gr_overflow": 0,
-        "displacement": 0.0,
-    },
-    "jpeg_encoder": {
-        "tns": -406.37,
-        "dpower": 123691000000,
-        "lpower": 309000000,
-        "slew_over_sum": 0.0,
-        "cap_over_sum": 0.0,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 7,
+        "tns": -311.27,
+        "dpower": 70091000000,
+        "lpower": 109000000,
+        "slew_over_sum": 539.39,
+        "cap_over_sum": 0.31,
+        "fanout_over_sum": 0,
+        "tool_runtime": 54,
         "flow_runtime": 7,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
-        "displacement": 0.0,
+        "displacement": 0,
     },
-    "jpeg_encoder_v2": {
-        "tns": -851.17,
-        "dpower": 166787000000,
-        "lpower": 213000000,
-        "slew_over_sum": 0.72,
-        "cap_over_sum": 0.0,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 6,
+    "aes_cipher_top_v2": {
+        "tns": -109.5143,
+        "dpower": 305911830000,
+        "lpower": 118170000,
+        "slew_over_sum": 259.873,
+        "cap_over_sum": 0.2828,
+        "fanout_over_sum": 0.01,
+        "tool_runtime": 116,
         "flow_runtime": 6,
+        "max_gr_overflow": 0.01,
+        "total_gr_overflow": 0.01,
+        "displacement": 0.3131,
+    },
+    "ariane": {
+        "tns": -1097386.88,
+        "dpower": 147380000000,
+        "lpower": 5620000000,
+        "slew_over_sum": 1732406.82,
+        "cap_over_sum": 50.99,
+        "fanout_over_sum": 0,
+        "tool_runtime": 792,
+        "flow_runtime": 70,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
-        "displacement": 0.0,
+        "displacement": 0,
+    },
+    "ariane_v2": {
+        "tns": -192248.58,
+        "dpower": 132920000000,
+        "lpower": 5080000000,
+        "slew_over_sum": 278972.32,
+        "cap_over_sum": 78.79,
+        "fanout_over_sum": 146927,
+        "tool_runtime": 1323,
+        "flow_runtime": 50,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+        "displacement": 0,
     },
     "bsg_chip": {
-        "tns": -119199.7,
-        "dpower": 773800000000,
+        "tns": -489273.34,
+        "dpower": 767800000000,
         "lpower": 37200000000,
-        "slew_over_sum": 832.24,
-        "cap_over_sum": 0.0,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 700,
-        "flow_runtime": 623,
+        "slew_over_sum": 665351.73,
+        "cap_over_sum": 281.1,
+        "fanout_over_sum": 0,
+        "tool_runtime": 1851,
+        "flow_runtime": 1515,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
-        "displacement": 0.0,
+        "displacement": 0,
     },
     "bsg_chip_v2": {
-        "tns": -90448.4,
-        "dpower": 1735100000000,
-        "lpower": 34900000000,
-        "slew_over_sum": 444.97,
-        "cap_over_sum": 0.01,
-        "fanout_over_sum": 0.0,
-        "tool_runtime": 400,
-        "flow_runtime": 354,
+        "tns": -651923.75,
+        "dpower": 1645200000000,
+        "lpower": 34800000000,
+        "slew_over_sum": 1096020.61,
+        "cap_over_sum": 561.03,
+        "fanout_over_sum": 0,
+        "tool_runtime": 1185,
+        "flow_runtime": 678,
         "max_gr_overflow": 0,
         "total_gr_overflow": 0,
-        "displacement": 0.0,
+        "displacement": 0,
     },
+    "jpeg_encoder": {
+        "tns": -19920.66,
+        "dpower": 185719000000,
+        "lpower": 281000000,
+        "slew_over_sum": 57206.73,
+        "cap_over_sum": 6.34,
+        "fanout_over_sum": 0,
+        "tool_runtime": 205,
+        "flow_runtime": 9,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+        "displacement": 0,
+    },
+    "jpeg_encoder_v2": {
+        "tns": -16853.2842,
+        "dpower": 169460830000,
+        "lpower": 219170000,
+        "slew_over_sum": 21311.4747,
+        "cap_over_sum": 6.9589,
+        "fanout_over_sum": 0.01,
+        "tool_runtime": 214,
+        "flow_runtime": 10,
+        "max_gr_overflow": 0.01,
+        "total_gr_overflow": 0.01,
+        "displacement": 0.0606,
+    },
+
 }
+
+
 
 
 def to_float(v, default=0.0) -> float:
@@ -133,9 +136,9 @@ def compute_s_final(d: dict) -> str:
     w_flowRuntime = 1.0
     w_maxOverflow = 1.0
     w_totalOverflow = 1.0
-    w_toolRuntime = 0.0
-    w_dis = 0.0
-    ethlon = 0.000001
+    w_toolRuntime = 0.5
+    w_dis = 0.5
+    ethlon = 1e-8
 
     design = d.get("design")
     Chc = to_float(d.get("Chc"),default=1.0)    
@@ -153,8 +156,8 @@ def compute_s_final(d: dict) -> str:
 
     #SPPA = w_tns * (-tns + baseline.get(design).get("tns")) / abs(-baseline.get(design).get("tns") + ethlon) + w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower") + w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower")
     SPPA = (
-        w_tns * (-tns + baseline.get(design).get("tns"))
-        / abs(-baseline.get(design).get("tns") + ethlon)
+        w_tns * (tns - baseline.get(design).get("tns"))
+        / abs(baseline.get(design).get("tns") + ethlon)
         + w_dpower
         * (baseline.get(design).get("dpower") - dpower)
         / baseline.get(design).get("dpower")
@@ -162,6 +165,12 @@ def compute_s_final(d: dict) -> str:
         * (baseline.get(design).get("lpower") - lpower)
         / baseline.get(design).get("lpower")
     )
+
+    # print("TNS: ", w_tns * (tns - baseline.get(design).get("tns")) / abs(baseline.get(design).get("tns") + ethlon))
+    # print("DPower: ", w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower"))
+    # print("LPower: ", w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower"))
+
+
     #PERC = w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon) + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon) + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
     PERC = (
         w_slew
@@ -174,9 +183,16 @@ def compute_s_final(d: dict) -> str:
         * (fanout_over_sum - baseline.get(design).get("fanout_over_sum"))
         / (baseline.get(design).get("fanout_over_sum") + ethlon)
     )    
+    # print("Slew: ", w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon))
+    # print("Cap: ", w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon))
+    # print("Fanout: ", w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon))
+
     R = w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime") + w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime")
+    # print("Flow Runtime: ", w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime"))
+    # print("Tool Runtime: ", w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime"))
 
     Pdis =  w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon)
+    # print("Displacement: ", w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon))
 
     #Poverflow = w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon) + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
     Poverflow = (
@@ -187,8 +203,12 @@ def compute_s_final(d: dict) -> str:
         * (total_gr_overflow - baseline.get(design).get("total_gr_overflow"))
         / (baseline.get(design).get("total_gr_overflow") + ethlon)
     )
-    
-    s_final = Chc * (SPPA - PERC - R - Pdis - Poverflow)       
+    # print("Max GR Overflow: ", w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon))
+    # print("Total GR Overflow: ", w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon))
+
+
+    s_final = Chc * (SPPA - PERC - R - Pdis - Poverflow)  
+    # print("S_final: ", str(s_final))     
 
     return str(s_final)
 

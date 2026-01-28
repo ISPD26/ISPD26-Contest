@@ -174,3 +174,9 @@ for entry in "${benchmarks[@]}"; do
     echo "Warning: eval.sh not found for $design_name"
   fi
 done
+
+  ###################################
+  # Step 3: generate total score
+  ###################################
+
+python "$TEST_DIR/final_score.py" "$TCL_NAME"
