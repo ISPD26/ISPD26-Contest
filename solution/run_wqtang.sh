@@ -46,11 +46,16 @@ mkdir -p "$PATH_OUTPUT_TEMP_DIR"
 PATH_ORIGINAL="$PATH_OUTPUT_TEMP_DIR/original"
 mkdir -p "$PATH_ORIGINAL"
 
+ORIGINAL_SDC="$DESIGN_DIR/contest.sdc"
 ORIGINAL_DEF="$DESIGN_DIR/contest.def"
 ORIGINAL_VERILOG="$DESIGN_DIR/contest.v"
 
 cp "$ORIGINAL_DEF" "$PATH_ORIGINAL/$DESIGN_NAME.def"
 cp "$ORIGINAL_VERILOG" "$PATH_ORIGINAL/$DESIGN_NAME.v"
+
+# Copy the original SDC file to the temporary output directory
+# other optimization scripts may need it 
+cp "$ORIGINAL_SDC" "$PATH_OUTPUT_TEMP_DIR/contest.sdc"
 
 # generate original evaluation and ans files
 ./scripts/eval.sh "$DESIGN_DIR" "$TECH_DIR" "$PATH_ORIGINAL" "$DESIGN_NAME" > "$PATH_ORIGINAL/output.log" 2>&1
@@ -64,12 +69,12 @@ cp "$ORIGINAL_VERILOG" "$PATH_ORIGINAL/$DESIGN_NAME.v"
 
 
 optimize_baseline() {
-    # local INPUT_PATH="${1}"
+    local INPUT_PATH="${1}"
     local OPT_NAME="${2}"
     local OPT_OUTPUT_PATH="$PATH_OUTPUT_TEMP_DIR/${OPT_NAME}"
     mkdir -p "$OPT_OUTPUT_PATH/"
     
-    ./scripts/optimize_openroad_baseline.sh "$DESIGN_DIR" "$TECH_DIR" "$OPT_OUTPUT_PATH" "$DESIGN_NAME" "${INPUT_PATH}" > "$OPT_OUTPUT_PATH/output.log" 2>&1
+    ./scripts/optimize_openroad_baseline.sh "$INPUT_PATH" "$TECH_DIR" "$OPT_OUTPUT_PATH" "$DESIGN_NAME" "${INPUT_PATH}" > "$OPT_OUTPUT_PATH/output.log" 2>&1
     ./scripts/write_ans.sh "$DESIGN_NAME" "$OPT_OUTPUT_PATH" "$OUTPUT_DIR" >> "$OPT_OUTPUT_PATH/output.log" 2>&1
 }
 
@@ -85,6 +90,14 @@ optimize_openroad_slew() {
 }
 
 
+change_corner_opt() {
+    local INPUT_PATH="${1}"
+    local CORNER_NAME="${2}"
+    mkdir -p "${INPUT_PATH}_${CORNER_NAME}"
+    ./bin/change_corner "$DESIGN_DIR/contest.def" "${INPUT_PATH}_${CORNER_NAME}/$DESIGN_NAME.def" \
+                        "$DESIGN_DIR/contest.v" "${INPUT_PATH}_${CORNER_NAME}/$DESIGN_NAME.v" "$CORNER_NAME" > /dev/null 2>&1
+    optimize_baseline "${INPUT_PATH}_${CORNER_NAME}" "baseline_${CORNER_NAME}"
+}
 
 
 #######################################
@@ -93,9 +106,15 @@ optimize_openroad_slew() {
 
 START_TIME=$(date +%s)
 # run different optimization strategies in parallel.
+
 optimize_baseline "$PATH_ORIGINAL" "baseline" &
-optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 20 &
-optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 30 &
+change_corner_opt "$PATH_ORIGINAL" "SL" &
+change_corner_opt "$PATH_ORIGINAL" "L" &
+change_corner_opt "$PATH_ORIGINAL" "R" &
+
+
+# optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 20 &
+# optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 30 &
 
 
 # wait for all background processes to finish

@@ -8,6 +8,11 @@ bool isValidCorner(const string& corner) {
 
 // Function to replace the corner suffix in a cell type name
 string changeCorner(const string& cell_type, const string& new_corner) {
+    // Don't change TAPCELL
+    if (cell_type.find("TAPCELL") == 0) {
+        return cell_type;
+    }
+    
     // Find the last underscore in the cell type name
     size_t last_underscore = cell_type.find_last_of('_');
     if (last_underscore != string::npos) {
@@ -111,10 +116,82 @@ void processDefFile(const string& input_file, const string& output_file, const s
     cout << "Skipped " << (components_processed - components_changed) << " components (no valid corner suffix)" << endl;
 }
 
+// Parse and modify Verilog file, changing cell type names
+void processVerilogFile(const string& input_file, const string& output_file, const string& corner_name) {
+    ifstream in(input_file);
+    ofstream out(output_file);
+    
+    if (!in) {
+        cerr << "Error opening input Verilog file: " << input_file << endl;
+        return;
+    }
+    
+    if (!out) {
+        cerr << "Error opening output Verilog file: " << output_file << endl;
+        return;
+    }
+
+    string line;
+    int instances_changed = 0;
+    
+    while (getline(in, line)) {
+        // Look for lines with cell instantiations
+        // Pattern: whitespace + CELL_TYPE + whitespace + instance_name + whitespace + (
+        // Example:  BUFx3_ASAP7_75t_L rebuffer18 (.A(net395),
+        
+        size_t pos = 0;
+        string modified_line = line;
+        
+        // Skip leading whitespace
+        while (pos < line.length() && isspace(line[pos])) pos++;
+        
+        if (pos < line.length() && (isalpha(line[pos]) || line[pos] == '_')) {
+            // Extract potential cell type
+            size_t cell_start = pos;
+            while (pos < line.length() && (isalnum(line[pos]) || line[pos] == '_')) {
+                pos++;
+            }
+            string cell_type = line.substr(cell_start, pos - cell_start);
+            
+            // Check if this is followed by whitespace and then an identifier (instance name)
+            if (pos < line.length() && isspace(line[pos])) {
+                size_t ws_start = pos;
+                while (pos < line.length() && isspace(line[pos])) pos++;
+                
+                // Check for instance name
+                if (pos < line.length() && (isalpha(line[pos]) || line[pos] == '_' || line[pos] == '\\')) {
+                    size_t inst_start = pos;
+                    while (pos < line.length() && (isalnum(line[pos]) || line[pos] == '_' || line[pos] == '/' || line[pos] == '\\')) {
+                        pos++;
+                    }
+                    
+                    // Skip whitespace after instance name
+                    while (pos < line.length() && isspace(line[pos])) pos++;
+                    
+                    // Check if followed by '(' which indicates instantiation
+                    if (pos < line.length() && line[pos] == '(') {
+                        // This is a cell instantiation
+                        string new_cell_type = changeCorner(cell_type, corner_name);
+                        
+                        if (new_cell_type != cell_type) {
+                            modified_line = line.substr(0, cell_start) + new_cell_type + line.substr(cell_start + cell_type.length());
+                            instances_changed++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        out << modified_line << endl;
+    }
+    
+    cout << "Verilog: Changed " << instances_changed << " instances to " << corner_name << endl;
+}
+
 int main(int argc, char* argv[]) {
-    if (argc != 4) {
-        cerr << "Usage: " << argv[0] << " <input def> <output def> <corner name>" << endl;
-        cerr << "Example: " << argv[0] << " testcases/aes_cipher_top/aes_cipher_top.def ./test_dir/aes_cipher_top.def SL" << endl;
+    if (argc != 6) {
+        cerr << "Usage: " << argv[0] << " <input def> <output def> <input verilog> <output verilog> <corner name>" << endl;
+        cerr << "Example: " << argv[0] << " testcases/aes_cipher_top/aes_cipher_top.def ./test_dir/aes_cipher_top.def testcases/aes_cipher_top/aes_cipher_top.v ./test_dir/aes_cipher_top.v SL" << endl;
         return 1;
     }
 
@@ -123,13 +200,18 @@ int main(int argc, char* argv[]) {
 
     string input_def = argv[1];
     string output_def = argv[2];
-    string corner_name = argv[3];
+    string input_verilog = argv[3];
+    string output_verilog = argv[4];
+    string corner_name = argv[5];
 
     cout << "Processing DEF file: " << input_def << endl;
     cout << "Output DEF file: " << output_def << endl;
+    cout << "Processing Verilog file: " << input_verilog << endl;
+    cout << "Output Verilog file: " << output_verilog << endl;
     cout << "Changing corner to: " << corner_name << endl;
 
     processDefFile(input_def, output_def, corner_name);
+    processVerilogFile(input_verilog, output_verilog, corner_name);
 
     return 0;
 }

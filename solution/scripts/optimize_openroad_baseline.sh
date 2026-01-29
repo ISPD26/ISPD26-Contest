@@ -75,6 +75,9 @@ sed -e "s|\$::env(DESIGN_NAME)|\"${DESIGN_NAME}\"|g" \
     -e "s|\$::env(TECH_DIR)|\"${TECH_DIR}\"|g" \
     -e "s|\$::env(DESIGN_DIR)|\"${DESIGN_DIR}\"|g" \
     -e "s|\$::env(OUTPUT_DIR)|\"${OUTPUT_DIR}\"|g" \
+    -e "s|\$design_dir/contest.v|\$design_dir/\$design_name.v|g" \
+    -e "s|\$design_dir/contest.def|\$design_dir/\$design_name.def|g" \
+    -e "s|\$design_dir/contest.sdc|\"${SOLUTION_DIR}/output_temp/${DESIGN_NAME}/contest.sdc\"|g" \
     "$TEMPLATE_FILE" > "$GENERATED_TCL_FILE"
 
 if [[ ! -f "$GENERATED_TCL_FILE" ]]; then

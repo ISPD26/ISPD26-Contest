@@ -47,7 +47,8 @@ sed -e "s|__TECH_DIR__|${TECH_DIR}|g" \
     "${SCRIPT_DIR}/lib_setup.tcl" > "${GENERATED_LIB_SETUP_TCL}"
 
 # Generate design_setup.tcl
-sed -e "s|__DESIGN_DIR__|${DESIGN_DIR}|g" \
+sed -e "s|__DESIGN_DIR__/contest.sdc|${SOLUTION_DIR}/output_temp/${DESIGN_NAME}/contest.sdc|g" \
+    -e "s|__DESIGN_DIR__|${DESIGN_DIR}|g" \
     -e "s|__OUTPUT_DIR__|${OUTPUT_DIR}|g" \
     -e "s|__DESIGN_NAME__|${DESIGN_NAME}|g" \
     "${SCRIPT_DIR}/design_setup.tcl" > "${GENERATED_DESIGN_SETUP_TCL}"
