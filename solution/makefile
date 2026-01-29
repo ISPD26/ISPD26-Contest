@@ -14,17 +14,17 @@ all: $(TARGETS)
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
-# Build gen_changelist
-$(BINDIR)/gen_changelist: $(SRCDIR)/gen_changelist.cpp | $(BINDIR)
-	$(CXX) $(CXXFLAGS) -o $@ $<
+# # Build gen_changelist
+# $(BINDIR)/gen_changelist: $(SRCDIR)/gen_changelist.cpp | $(BINDIR)
+# 	$(CXX) $(CXXFLAGS) -o $@ $<
 
-# Build calc_displacement
-$(BINDIR)/calc_displacement: $(SRCDIR)/calc_displacement.cpp | $(BINDIR)
-	$(CXX) $(CXXFLAGS) -o $@ $<
+# # Build calc_displacement
+# $(BINDIR)/calc_displacement: $(SRCDIR)/calc_displacement.cpp | $(BINDIR)
+# 	$(CXX) $(CXXFLAGS) -o $@ $<
 	
-# Build filter_backslash
-$(BINDIR)/filter_backslash: $(SRCDIR)/filter_backslash.cpp | $(BINDIR)
-	$(CXX) $(CXXFLAGS) -o $@ $<
+# # Build filter_backslash
+# $(BINDIR)/filter_backslash: $(SRCDIR)/filter_backslash.cpp | $(BINDIR)
+# 	$(CXX) $(CXXFLAGS) -o $@ $<
 
 # Build change_corner
 $(BINDIR)/change_corner: $(SRCDIR)/change_corner.cpp | $(BINDIR)
@@ -35,9 +35,9 @@ clean:
 	rm -f $(TARGETS)
 
 # Individual targets for convenience
-gen_changelist: $(BINDIR)/gen_changelist
-calc_displacement: $(BINDIR)/calc_displacement
-filter_backslash: $(BINDIR)/filter_backslash
+# gen_changelist: $(BINDIR)/gen_changelist
+# calc_displacement: $(BINDIR)/calc_displacement
+# filter_backslash: $(BINDIR)/filter_backslash
 change_corner: $(BINDIR)/change_corner
 
 .PHONY: all clean gen_changelist calc_displacement filter_backslash change_corner
