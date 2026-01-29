@@ -4,8 +4,13 @@ CXXFLAGS = -std=c++17 -O3
 BINDIR = bin
 SRCDIR = src
 
-TARGETS = $(BINDIR)/gen_changelist $(BINDIR)/calc_displacement $(BINDIR)/filter_backslash $(BINDIR)/change_corner
-SOURCES = $(SRCDIR)/gen_changelist.cpp $(SRCDIR)/calc_displacement.cpp $(SRCDIR)/filter_backslash.cpp $(SRCDIR)/change_corner.cpp
+# TARGETS = $(BINDIR)/gen_changelist $(BINDIR)/calc_displacement $(BINDIR)/filter_backslash $(BINDIR)/change_corner
+# SOURCES = $(SRCDIR)/gen_changelist.cpp $(SRCDIR)/calc_displacement.cpp $(SRCDIR)/filter_backslash.cpp $(SRCDIR)/change_corner.cpp
+
+
+TARGETS = $(BINDIR)/change_corner
+SOURCES = $(SRCDIR)/change_corner.cpp
+
 
 # Default target - build all executables
 all: $(TARGETS)
