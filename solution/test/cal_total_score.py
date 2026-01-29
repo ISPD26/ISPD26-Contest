@@ -127,7 +127,7 @@ def to_float(v, default=0.0) -> float:
         return default
 
 
-def compute_s_final(d: dict) -> str:
+def compute_s_final(d: dict, debug = True) -> str:
     w_tns = 80.0
     w_dpower = 40.0
     w_lpower = 40.0
@@ -166,10 +166,11 @@ def compute_s_final(d: dict) -> str:
         * (baseline.get(design).get("lpower") - lpower)
         / baseline.get(design).get("lpower")
     )
-
-    # print("TNS: ", w_tns * (tns - baseline.get(design).get("tns")) / abs(baseline.get(design).get("tns") + ethlon))
-    # print("DPower: ", w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower"))
-    # print("LPower: ", w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower"))
+    if(debug):
+        print("TNS: ", w_tns * (tns - baseline.get(design).get("tns")) / abs(baseline.get(design).get("tns") + ethlon))
+        print("DPower: ", w_dpower * (baseline.get(design).get("dpower") - dpower) / baseline.get(design).get("dpower"))
+        print("LPower: ", w_lpower * (baseline.get(design).get("lpower") - lpower) / baseline.get(design).get("lpower"))
+        print("SPPA: ", SPPA)
 
 
     #PERC = w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon) + w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon) + w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon)
@@ -184,16 +185,22 @@ def compute_s_final(d: dict) -> str:
         * (fanout_over_sum - baseline.get(design).get("fanout_over_sum"))
         / (baseline.get(design).get("fanout_over_sum") + ethlon)
     )    
-    # print("Slew: ", w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon))
-    # print("Cap: ", w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon))
-    # print("Fanout: ", w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon))
+    if(debug):
+        print("Slew: ", w_slew * (slew_over_sum - baseline.get(design).get("slew_over_sum")) / (baseline.get(design).get("slew_over_sum") + ethlon))
+        print("Cap: ", w_cap * (cap_over_sum - baseline.get(design).get("cap_over_sum")) / (baseline.get(design).get("cap_over_sum") + ethlon))
+        print("Fanout: ", w_fanout * (fanout_over_sum - baseline.get(design).get("fanout_over_sum")) / (baseline.get(design).get("fanout_over_sum") + ethlon))
+        print("PERC: ", PERC)
 
     R = w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime") + w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime")
-    # print("Flow Runtime: ", w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime"))
-    # print("Tool Runtime: ", w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime"))
+    if(debug):
+        print("Flow Runtime: ", w_flowRuntime * (flow_runtime - baseline.get(design).get("flow_runtime")) / baseline.get(design).get("flow_runtime"))
+        print("Tool Runtime: ", w_toolRuntime * (tool_runtime - baseline.get(design).get("tool_runtime")) / baseline.get(design).get("tool_runtime"))
+        print("R: ", R)
 
     Pdis =  w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon)
-    # print("Displacement: ", w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon))
+    if(debug):
+        print("Displacement: ", w_dis * (displacement - baseline.get(design).get("displacement")) / (baseline.get(design).get("displacement") + ethlon))
+        print("Pdis: ", Pdis)
 
     #Poverflow = w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon) + w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon)
     Poverflow = (
@@ -204,13 +211,15 @@ def compute_s_final(d: dict) -> str:
         * (total_gr_overflow - baseline.get(design).get("total_gr_overflow"))
         / (baseline.get(design).get("total_gr_overflow") + ethlon)
     )
-    # print("Max GR Overflow: ", w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon))
-    # print("Total GR Overflow: ", w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon))
+    print("Max GR Overflow: ", w_maxOverflow * (max_gr_overflow - baseline.get(design).get("max_gr_overflow")) / (baseline.get(design).get("max_gr_overflow") + ethlon))
+    print("Total GR Overflow: ", w_totalOverflow * (total_gr_overflow - baseline.get(design).get("total_gr_overflow")) / (baseline.get(design).get("total_gr_overflow") + ethlon))
+    print("Poverflow: ", Poverflow)
 
 
     s_final = Chc * (SPPA - PERC - R - Pdis - Poverflow)  
-    # print("S_final: ", str(s_final))     
-    if(tns == 0.0):
+    print("Chc: ", Chc)
+    print("S_final: ", str(s_final))     
+    if(lpower == 0.0):
         s_final = 0
 
     

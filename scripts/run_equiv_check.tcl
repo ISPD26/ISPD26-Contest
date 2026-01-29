@@ -2,9 +2,10 @@ set design_name     "$::env(DESIGN_NAME)"
 set folder $::env(FOLDER_NAME)
 set top_proj_dir    "$::env(TOP_PROJ_DIR)"
 set proj_dir        "$::env(PROJ_DIR)"
+set out_dir         "$::env(OUT_DIR)"
 
 source lib_setup.tcl
-source design_setup_baseline.tcl
+source design_setup.tcl
 source or_utils.tcl
 
 ## Read lef and lib files

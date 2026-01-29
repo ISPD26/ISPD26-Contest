@@ -4,6 +4,8 @@ export TOP_PROJ_DIR="/ISPD26-Contest"
 export PROJ_DIR="${TOP_PROJ_DIR}/scripts"
 export DESIGN_NAME="aes_cipher_top_v2"
 export FOLDER_NAME="TCP_200_UTIL_0.40"
+TCL_NAME="baseline"
+export OUT_DIR="${TOP_PROJ_DIR}/solution/output/${TCL_NAME}/${DESIGN_NAME}/${FOLDER_NAME}"
 
 # Run OpenROAD and capture output to log file
 mkdir ${FOLDER_NAME} -p

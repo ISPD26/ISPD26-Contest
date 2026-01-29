@@ -58,10 +58,10 @@ cp "$ORIGINAL_VERILOG" "$PATH_ORIGINAL/$DESIGN_NAME.v"
 cp "$ORIGINAL_SDC" "$PATH_OUTPUT_TEMP_DIR/contest.sdc"
 
 # generate original evaluation and ans files
-./scripts/eval.sh "$DESIGN_DIR" "$TECH_DIR" "$PATH_ORIGINAL" "$DESIGN_NAME" > "$PATH_ORIGINAL/output.log" 2>&1
+# ./scripts/eval.sh "$DESIGN_DIR" "$TECH_DIR" "$PATH_ORIGINAL" "$DESIGN_NAME" > "$PATH_ORIGINAL/output.log" 2>&1
 
 # write file to output if its score is better than the best one in output dir
-./scripts/write_ans.sh "$DESIGN_NAME" "$PATH_ORIGINAL" "$OUTPUT_DIR" >> "$PATH_ORIGINAL/output.log" 2>&1
+# ./scripts/write_ans.sh "$DESIGN_NAME" "$PATH_ORIGINAL" "$OUTPUT_DIR" >> "$PATH_ORIGINAL/output.log" 2>&1
 
 #######################################
 # 1.2 optimization functions definition
