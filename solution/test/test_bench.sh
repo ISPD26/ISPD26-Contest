@@ -14,7 +14,7 @@ TEST_DIR="/ISPD26-Contest/solution/test"
 # Default options
 #######################################
 TCL_NAME="baseline"
-RUN_SCRIPT="run.sh"
+RUN_SCRIPT="run_ori.sh"
 
 #######################################
 # Benchmark list
@@ -88,7 +88,7 @@ while [[ $# -gt 0 ]]; do
     -s)
       [[ $# -lt 2 ]] && usage
       if [[ "$2" == "wq" ]]; then
-        RUN_SCRIPT="run_wqtang.sh"
+        RUN_SCRIPT="run.sh"
       else
         RUN_SCRIPT="$2"
       fi
