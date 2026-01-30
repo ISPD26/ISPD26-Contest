@@ -104,7 +104,16 @@ mkdir -p "$OUTPUT_DIR"
 # Run OpenROAD
 #######################################
 echo "Running OpenROAD with generated TCL file..."
-openroad \
+
+# Use openroad from ISPD26-Contest directory
+OPENROAD_BIN="/home/mitch24/ISPD26-Contest/openroad/openroad"
+
+if [[ ! -x "$OPENROAD_BIN" ]]; then
+  echo "Error: OpenROAD not found at $OPENROAD_BIN" >&2
+  exit 5
+fi
+
+"$OPENROAD_BIN" \
   -no_init \
   -exit \
   "$GENERATED_TCL_FILE"

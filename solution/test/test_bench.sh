@@ -13,7 +13,7 @@ TEST_DIR="/ISPD26-Contest/solution/test"
 #######################################
 # Default options
 #######################################
-TCL_NAME="baseline"
+TCL_NAME="ga_baseline"
 
 #######################################
 # Benchmark list
