@@ -109,6 +109,58 @@ baseline = {
         "total_gr_overflow": 0.01,
         "displacement": 0.0606,
     },
+    "ariane_h1": {
+        "tns": -45407.98,
+        "dpower": 148000000000,
+        "lpower": 4770000000,
+        "slew_over_sum": 29247.43,
+        "cap_over_sum": 14.5,
+        "fanout_over_sum": 0,
+        "tool_runtime": 0,
+        "flow_runtime": 45,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+        "displacement": 0,
+    },
+    "ariane_h2": {
+        "tns": -23522.25,
+        "dpower": 157000000000,
+        "lpower": 5020000000,
+        "slew_over_sum": 20295.41,
+        "cap_over_sum": 11.21,
+        "fanout_over_sum": 0,
+        "tool_runtime": 0,
+        "flow_runtime": 59,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+        "displacement": 0,
+    },
+    "bsg_chip_h1": {
+        "tns": -364467.44,
+        "dpower": 725000000000,
+        "lpower": 28400000000,
+        "slew_over_sum": 305355.39,
+        "cap_over_sum": 172.61,
+        "fanout_over_sum": 0,
+        "tool_runtime": 0,
+        "flow_runtime": 437,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+        "displacement": 0,
+    },
+    "bsg_chip_h2": {
+        "tns": -585245.38,
+        "dpower": 786000000000,
+        "lpower": 28400000000,
+        "slew_over_sum": 561767.19,
+        "cap_over_sum": 236.01,
+        "fanout_over_sum": 0,
+        "tool_runtime": 0,
+        "flow_runtime": 656,
+        "max_gr_overflow": 0,
+        "total_gr_overflow": 0,
+        "displacement": 0,
+    },
 
 }
 
@@ -142,6 +194,10 @@ def compute_s_final(d: dict, debug = True) -> str:
     ethlon = 1e-8
 
     design = d.get("design")
+    if design not in baseline:
+        if debug:
+            print(f"Unknown design: {design}, returning 0")
+        return "0"
     Chc = to_float(d.get("Chc"),default=1.0)    
     tns = to_float(d.get("tns"))
     dpower = to_float(d.get("total_power")) - to_float(d.get("leakage_power"))
