@@ -107,10 +107,34 @@ change_corner_opt() {
 START_TIME=$(date +%s)
 # run different optimization strategies in parallel.
 
-optimize_baseline "$PATH_ORIGINAL" "baseline" &
-change_corner_opt "$PATH_ORIGINAL" "SL" &
-change_corner_opt "$PATH_ORIGINAL" "L" &
-change_corner_opt "$PATH_ORIGINAL" "R" &
+# Known designs that can run in parallel
+KNOWN_DESIGNS="aes_cipher_top aes_cipher_top_v2 ariane ariane_v2  jpeg_encoder jpeg_encoder_v2 ariane_h1 ariane_h2 "
+# the design cannot run in parallel: bsg_chip bsg_chip_v2 bsg_chip_h1 bsg_chip_h2
+
+
+is_known_design() {
+    local design="$1"
+    for known in $KNOWN_DESIGNS; do
+        if [[ "$design" == "$known" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+if is_known_design "$DESIGN_NAME"; then
+    # Run in parallel for known designs
+    optimize_baseline "$PATH_ORIGINAL" "baseline" &
+    change_corner_opt "$PATH_ORIGINAL" "SL" &
+    change_corner_opt "$PATH_ORIGINAL" "L" &
+    change_corner_opt "$PATH_ORIGINAL" "R" &
+else
+    # Run sequentially for unknown designs
+    optimize_baseline "$PATH_ORIGINAL" "baseline"
+    change_corner_opt "$PATH_ORIGINAL" "SL"
+    change_corner_opt "$PATH_ORIGINAL" "L"
+    change_corner_opt "$PATH_ORIGINAL" "R"
+fi
 
 
 # optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 20 &
