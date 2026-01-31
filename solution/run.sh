@@ -130,12 +130,20 @@ if is_known_design "$DESIGN_NAME"; then
     change_corner_opt "$PATH_ORIGINAL" "R" &
 else
     # Run sequentially for unknown designs
-    optimize_baseline "$PATH_ORIGINAL" "baseline"
-    change_corner_opt "$PATH_ORIGINAL" "SL"
-    change_corner_opt "$PATH_ORIGINAL" "L"
-    change_corner_opt "$PATH_ORIGINAL" "R"
-fi
+    # optimize_baseline "$PATH_ORIGINAL" "baseline"
+    # change_corner_opt "$PATH_ORIGINAL" "SL"
+    # change_corner_opt "$PATH_ORIGINAL" "L"
+    # change_corner_opt "$PATH_ORIGINAL" "R"
 
+    # Run at most two jobs in parallel to avoid OOM
+    change_corner_opt "$PATH_ORIGINAL" "L" &
+    change_corner_opt "$PATH_ORIGINAL" "R" &
+    wait -n
+    optimize_baseline "$PATH_ORIGINAL" "baseline" &
+    wait -n
+    change_corner_opt "$PATH_ORIGINAL" "SL" &
+
+fi
 
 # optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 20 &
 # optimize_openroad_slew "$PATH_ORIGINAL" "openroad_slew" 30 &
