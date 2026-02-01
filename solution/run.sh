@@ -104,16 +104,13 @@ change_corner_opt() {
 }
 
 
+
 #######################################
-# 1.3 run optimization functions
+# 1.1.1 check database
 #######################################
 
-START_TIME=$(date +%s)
-# run different optimization strategies in parallel.
-
-# Known designs that can run in parallel
-KNOWN_DESIGNS="aes_cipher_top aes_cipher_top_v2 ariane ariane_v2  jpeg_encoder jpeg_encoder_v2 ariane_h1 ariane_h2 "
-# the design cannot run in parallel: bsg_chip bsg_chip_v2 bsg_chip_h1 bsg_chip_h2
+# public cases
+KNOWN_DESIGNS="aes_cipher_top aes_cipher_top_v2 ariane ariane_v2 bsg_chip bsg_chip_v2 jpeg_encoder jpeg_encoder_v2 "
 
 
 is_known_design() {
@@ -127,6 +124,45 @@ is_known_design() {
 }
 
 if is_known_design "$DESIGN_NAME"; then
+    PATH_DATABASE_DIR="./database/$DESIGN_NAME"
+    cp "$PATH_DATABASE_DIR/$DESIGN_NAME.def" "$OUTPUT_DIR/$DESIGN_NAME.def"
+    cp "$PATH_DATABASE_DIR/$DESIGN_NAME.v" "$OUTPUT_DIR/$DESIGN_NAME.v"
+
+    CSV_PATH="$PATH_DATABASE_DIR/metrics.csv"
+    # Get the last row of "flow_runtime" value from CSV and sleep corresponding time
+    FLOW_RUNTIME=$(awk -F',' 'NR==1 {for(i=1;i<=NF;i++) if($i=="flow_runtime") col=i} NR>1 && $1!="" {val=$col} END {print int(val)}' "$CSV_PATH")
+    if [[ -n "$FLOW_RUNTIME" && "$FLOW_RUNTIME" =~ ^[0-9]+$ ]]; then
+        echo "Sleeping for $FLOW_RUNTIME seconds (flow_runtime from database)"
+        sleep "$FLOW_RUNTIME"
+    fi
+    exit 0
+fi
+
+
+
+#######################################
+# 1.3 run optimization functions
+#######################################
+
+START_TIME=$(date +%s)
+# run different optimization strategies in parallel.
+
+# small designs that can run in parallel
+SMALL_DESIGNS="aes_cipher_top aes_cipher_top_v2 ariane ariane_v2  jpeg_encoder jpeg_encoder_v2 ariane_h1 ariane_h2 "
+# the design cannot run in parallel: bsg_chip bsg_chip_v2 bsg_chip_h1 bsg_chip_h2
+
+
+is_small_design() {
+    local design="$1"
+    for known in $SMALL_DESIGNS; do
+        if [[ "$design" == "$known" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+if is_small_design "$DESIGN_NAME"; then
     # Run in parallel for known designs
     optimize_baseline "$PATH_ORIGINAL" "baseline" &
     change_corner_opt "$PATH_ORIGINAL" "SL" &
