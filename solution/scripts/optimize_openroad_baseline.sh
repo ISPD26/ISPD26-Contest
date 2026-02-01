@@ -94,7 +94,7 @@ mkdir -p "$OUTPUT_DIR"
 # Run OpenROAD
 #######################################
 echo "Running OpenROAD with generated baseline TCL script..."
-openroad \
+./bin/openroad_my \
   -no_init \
   -exit \
   "$GENERATED_TCL_FILE"
