@@ -37,6 +37,10 @@ DESIGN_NAME="$4"
 
 shift 4
 
+
+# set ture design_name
+DESIGN_NAME=$(basename "$(dirname  "$(realpath  $DESIGN_DIR)")")
+
 #######################################
 # 1.1 output original design
 #######################################
@@ -129,19 +133,11 @@ if is_known_design "$DESIGN_NAME"; then
     change_corner_opt "$PATH_ORIGINAL" "L" &
     change_corner_opt "$PATH_ORIGINAL" "R" &
 else
-    # Run sequentially for unknown designs
+    # Run jobs one by one to avoid OOM
+    change_corner_opt "$PATH_ORIGINAL" "L"
+    change_corner_opt "$PATH_ORIGINAL" "R"
     # optimize_baseline "$PATH_ORIGINAL" "baseline"
     # change_corner_opt "$PATH_ORIGINAL" "SL"
-    # change_corner_opt "$PATH_ORIGINAL" "L"
-    # change_corner_opt "$PATH_ORIGINAL" "R"
-
-    # Run at most two jobs in parallel to avoid OOM
-    change_corner_opt "$PATH_ORIGINAL" "L" &
-    change_corner_opt "$PATH_ORIGINAL" "R" &
-    wait -n
-    optimize_baseline "$PATH_ORIGINAL" "baseline" &
-    wait -n
-    change_corner_opt "$PATH_ORIGINAL" "SL" &
 
 fi
 
